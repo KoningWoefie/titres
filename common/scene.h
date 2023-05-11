@@ -2,11 +2,12 @@
 #define SCENE_H
 
 #include <vector>
+#include <common/entity.h>
 #include <common/camera.h>
 #include <common/sprite.h>
 #include <common/config.h>
 
-class Scene
+class Scene : public Entity
 {
 public:
 	Scene();
@@ -14,14 +15,10 @@ public:
 
 	virtual void update(float deltaTime) = 0;
 
-	void addSprite(Sprite* sprite);
-
 	Camera* camera() { return _camera; };
-	std::vector<Sprite*>& sprites() { return _sprites; };
 
 private:
 	Camera* _camera;
-	std::vector<Sprite*> _sprites;
 };
 
 #endif /* SCENE_H */

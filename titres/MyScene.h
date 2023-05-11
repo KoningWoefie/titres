@@ -2,6 +2,7 @@
 #define MYSCENE_H
 
 #include <common/scene.h>
+#include "MyEntity.h"
 
 class MyScene : public Scene
 {
@@ -13,6 +14,6 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	Sprite* rgba;
+	MyEntity* kingkong;
 };
 #endif // !MYSCENE_H

@@ -2,7 +2,7 @@
 #include <common/scene.h>
 #include <common/config.h>
 
-Scene::Scene()
+Scene::Scene() : Entity()
 {
 	_camera = new Camera();
 }
@@ -10,18 +10,13 @@ Scene::Scene()
 Scene::~Scene()
 {
 	// Delete all the sprites
-	for (size_t i = 0; i < _sprites.size(); i++)
+	for (size_t i = 0; i < children.size(); i++)
 	{
-		delete _sprites[i];
-		_sprites[i] = nullptr;
+		delete children[i];
+		children[i] = nullptr;
 	}
-	_sprites.clear();
+	children.clear();
 
 	// Delete camera
 	delete _camera;
-}
-
-void Scene::addSprite(Sprite* sprite)
-{
-	_sprites.push_back(sprite);
 }
