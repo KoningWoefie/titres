@@ -1,8 +1,14 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <algorithm>
 #include <vector>
 #include <common/sprite.h>
+#include <common/config.h>
 #include <glm/glm.hpp>
 
 class Entity

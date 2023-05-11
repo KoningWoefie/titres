@@ -1,7 +1,7 @@
 #include "MyEntity.h"
 
 MyEntity::MyEntity()
-{;
+{
 	this->AddSprite("assets/kingkong.tga");
 }
 

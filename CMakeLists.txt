@@ -75,6 +75,8 @@ add_library(common # ar rcs libcommon.a
 	common/resourcemanager.h
 	common/entity.cpp
 	common/entity.h
+	common/game.cpp
+	common/game.h
 )
 
 # Demo
