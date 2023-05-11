@@ -133,9 +133,9 @@ void Renderer::renderSprite(Sprite* sprite)
 
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, sprite->texture());
+	glBindTexture(GL_TEXTURE_2D, _resMan.GetTexture(sprite->TextureName(), sprite));
 	// Set our "textureSampler" sampler to use Texture Unit 0
-	GLuint textureID  = glGetUniformLocation(_programID, "textureSampler");
+	GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
 	glUniform1i(textureID, 0);
 
 	// 1st attribute buffer : vertices

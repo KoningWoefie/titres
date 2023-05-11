@@ -1,6 +1,6 @@
 # CMake entry point
 cmake_minimum_required (VERSION 3.1)
-project (MyFramework)
+project (SH2D)
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
 	message( FATAL_ERROR "Please select another Build Directory ! (and give it a clever name, like 'build')" )
@@ -71,6 +71,8 @@ add_library(common # ar rcs libcommon.a
 	common/scene.cpp
 	common/sprite.h
 	common/sprite.cpp
+	common/resourcemanager.cpp
+	common/resourcemanager.h
 )
 
 # Demo
@@ -80,6 +82,10 @@ add_executable(demo # g++ demo/demo.cpp -o demo
 	demo/MyScene.h
 )
 target_link_libraries(demo # g++ -lcommon
+	common
+	${ALL_GRAPHICS_LIBS}
+)
+target_link_libraries(titres #g++ -lcommon
 	common
 	${ALL_GRAPHICS_LIBS}
 )

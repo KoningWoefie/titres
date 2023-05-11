@@ -21,9 +21,24 @@ Sprite::Sprite(const std::string& imagepath)
 	_width = 0;
 	_height = 0;
 
-	// Load image as texture
-	_texture = loadTGA(imagepath);
+	_vertexbuffer = 0;
+	_uvbuffer = 0;
 
+	_textureName = imagepath;
+
+	createBuffer();
+}
+
+Sprite::~Sprite()
+{
+	// cleanup
+	glDeleteBuffers(1, &_vertexbuffer);
+	glDeleteBuffers(1, &_uvbuffer);
+	glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
+}
+
+void Sprite::createBuffer()
+{
 	// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 	// A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
 	GLfloat g_vertex_buffer_data[18] = {
@@ -58,22 +73,14 @@ Sprite::Sprite(const std::string& imagepath)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 }
 
-Sprite::~Sprite()
+GLuint Sprite::loadTGA()
 {
-	// cleanup
-	glDeleteBuffers(1, &_vertexbuffer);
-	glDeleteBuffers(1, &_uvbuffer);
-	glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
-}
-
-GLuint Sprite::loadTGA(const std::string& imagepath)
-{
-	std::cout << "Loading TGA: " << imagepath << std::endl;
+	std::cout << "Loading TGA: " << _textureName << std::endl;
 
 	// Open the file on disk
 	FILE *file;
 
-	file = fopen(imagepath.c_str(), "rb");
+	file = fopen(_textureName.c_str(), "rb");
 
 	if (!file) {
 		std::cout << "error: unable to open file" << std::endl;
@@ -108,13 +115,13 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 
 	// Check if the image's width and height is a power of 2. No biggie, we can handle it.
 	if ((_width & (_width - 1)) != 0) {
-		std::cout << "warning: " << imagepath << "’s width is not a power of 2" << std::endl;
+		std::cout << "warning: " << _textureName << "’s width is not a power of 2" << std::endl;
 	}
 	if ((_height & (_height - 1)) != 0) {
-		std::cout << "warning: " << imagepath << "’s height is not a power of 2" << std::endl;
+		std::cout << "warning: " << _textureName << "’s height is not a power of 2" << std::endl;
 	}
 	if (_width != _height) {
-		std::cout << "warning: " << imagepath << " is not square" << std::endl;
+		std::cout << "warning: " << _textureName << " is not square" << std::endl;
 	}
 
 	// Calculate pixelbuffer size in bytes
@@ -194,6 +201,8 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 
 	// OpenGL has now copied the data. Free our own version
 	delete [] data;
+
+	createBuffer();
 
 	// Return the ID of the texture we just created
 	return textureID;

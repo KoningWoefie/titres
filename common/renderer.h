@@ -7,6 +7,7 @@
 #include <common/scene.h>
 #include <common/camera.h>
 #include <common/sprite.h>
+#include <common/resourcemanager.h>
 
 class Renderer
 {
@@ -33,6 +34,8 @@ private:
 	GLuint _programID;
 
 	Camera* _camera; // reference to scene->camera
+
+	ResourceManager _resMan;
 };
 
 #endif /* RENDERER_H */
