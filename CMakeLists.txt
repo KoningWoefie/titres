@@ -81,6 +81,13 @@ add_executable(demo # g++ demo/demo.cpp -o demo
 	demo/MyScene.cpp
 	demo/MyScene.h
 )
+
+#Titres
+add_executable(titres # g++ titres/demo.cpp -o titres
+	titres/demo.cpp
+	titres/MyScene.cpp
+	titres/MyScene.h
+)
 target_link_libraries(demo # g++ -lcommon
 	common
 	${ALL_GRAPHICS_LIBS}
@@ -92,7 +99,7 @@ target_link_libraries(titres #g++ -lcommon
 # Copy assets and shaders to the build directory
 # (In Visual Studio, copy these directories to either 'Release' or 'Build')
 file(
-	COPY demo/assets
+	COPY titres/assets
 	DESTINATION ${CMAKE_BINARY_DIR}
 )
 file(
