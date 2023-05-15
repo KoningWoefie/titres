@@ -93,6 +93,10 @@ add_executable(titres # g++ titres/demo.cpp -o titres
 	titres/MyScene.h
 	titres/MyEntity.cpp
 	titres/MyEntity.h
+	titres/Grid.cpp
+	titres/Grid.h
+	titres/Block.cpp
+	titres/Block.h
 )
 target_link_libraries(demo # g++ -lcommon
 	common
