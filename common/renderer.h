@@ -16,7 +16,7 @@ public:
 	virtual ~Renderer();
 
 	void renderScene(Scene* scene);
-	void renderEntity(Entity* entity);
+	void renderEntity(Entity* entity, glm::mat4 PaMa);
 	void renderSprite(Sprite* sprite, glm::mat4 MVP);
 	GLFWwindow* window() { return _window; };
 

@@ -23,8 +23,6 @@ public:
 
 	void AddSprite(const std::string& fileName);
 
-	void SetUpSprite();
-
 	void UpdateSprite();
 
 	std::vector<Entity*> Children() { return children; };

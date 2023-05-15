@@ -12,7 +12,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		}
 		grid.push_back(row);
 	}
-} 
+}
 Grid::~Grid() 
 {
 }

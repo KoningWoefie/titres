@@ -97,13 +97,15 @@ void Renderer::renderScene(Scene* scene)
 	// get camera from scene and update
 	_camera = scene->camera();
 
+	glm::mat4 mm = glm::mat4(1.0f);
+
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Render all te sprites
 	for (Entity* entity : scene->Children())
 	{
-		renderEntity(entity);
+		renderEntity(entity, mm);
 	}
 
 	// Swap buffers
@@ -111,7 +113,7 @@ void Renderer::renderScene(Scene* scene)
 	glfwPollEvents();
 }
 
-void Renderer::renderEntity(Entity* entity)
+void Renderer::renderEntity(Entity* entity, glm::mat4 PaMa)
 {
 	// get view + projectionmatrix from camera
 	glm::mat4 viewMatrix = _camera->getViewMatrix();
@@ -127,15 +129,17 @@ void Renderer::renderEntity(Entity* entity)
 	// Build MVP matrix
 	glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
 
+	glm::mat4 MAT = MVP * PaMa;
+
 	if (entity->ESprite() != nullptr)
 	{
 		entity->UpdateSprite();
-		this->renderSprite(entity->ESprite(), MVP);
+		this->renderSprite(entity->ESprite(), MAT);
 	}
 
 	for (int i = 0; i < entity->Children().size(); i++)
 	{
-		renderEntity(entity->Children()[i]);
+		renderEntity(entity->Children()[i], modelMatrix);
 	}
 }
 

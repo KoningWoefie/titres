@@ -4,7 +4,7 @@ Entity::Entity()
 {
 	parent = nullptr;
 	sprite = nullptr;
-	position = glm::vec3(0,0,0);
+	position = glm::vec3(0, 0, 0);
 	scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	rotation = 0;
 }
@@ -17,6 +17,7 @@ Entity::~Entity()
 void Entity::AddChild(Entity* e)
 {
 	children.push_back(e);
+	e->parent = this;
 }
 
 void Entity::AddSprite(const std::string& fileName)
@@ -27,14 +28,6 @@ void Entity::AddSprite(const std::string& fileName)
 		sprite = nullptr;
 	}
 	sprite = new Sprite(fileName);
-	this->SetUpSprite();
-}
-
-void Entity::SetUpSprite()
-{
-	sprite->position += this->position;
-	sprite->scale = this->scale;
-	sprite->rotation += this->rotation;
 }
 
 void Entity::UpdateSprite()
