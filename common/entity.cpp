@@ -27,4 +27,18 @@ void Entity::AddSprite(const std::string& fileName)
 		sprite = nullptr;
 	}
 	sprite = new Sprite(fileName);
+	this->SetUpSprite();
+}
+
+void Entity::SetUpSprite()
+{
+	sprite->position += this->position;
+	sprite->scale = this->scale;
+	sprite->rotation += this->rotation;
+}
+
+void Entity::UpdateSprite()
+{
+	sprite->position = this->position;
+	sprite->rotation = this->rotation;
 }

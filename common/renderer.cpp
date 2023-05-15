@@ -103,10 +103,7 @@ void Renderer::renderScene(Scene* scene)
 	// Render all te sprites
 	for (Entity* entity : scene->Children())
 	{
-		entity->ESprite()->position = entity->position;
-		entity->ESprite()->scale = entity->scale;
-		entity->ESprite()->rotation = entity->rotation;
-		this->renderSprite(entity->ESprite());
+		renderEntity(entity);
 	}
 
 	// Swap buffers
@@ -114,29 +111,46 @@ void Renderer::renderScene(Scene* scene)
 	glfwPollEvents();
 }
 
-void Renderer::renderSprite(Sprite* sprite)
+void Renderer::renderEntity(Entity* entity)
 {
 	// get view + projectionmatrix from camera
 	glm::mat4 viewMatrix = _camera->getViewMatrix();
 	glm::mat4 projectionMatrix = _camera->getProjectionMatrix();
 
 	// Build the Model matrix from Sprite transform
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sprite->position.x, sprite->position.y, 0.0f));
-	glm::mat4 rotationMatrix    = glm::eulerAngleYXZ(0.0f, 0.0f, sprite->rotation);
-	glm::mat4 scalingMatrix     = glm::scale(glm::mat4(1.0f), glm::vec3(sprite->scale.x, sprite->scale.y, 1.0f));
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(entity->position.x, entity->position.y, 0.0f));
+	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, entity->rotation);
+	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(entity->scale.x, entity->scale.y, 1.0f));
 
 	glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
 	// Build MVP matrix
 	glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
 
+	if (entity->ESprite() != nullptr)
+	{
+		entity->UpdateSprite();
+		this->renderSprite(entity->ESprite(), MVP);
+	}
+
+	for (int i = 0; i < entity->Children().size(); i++)
+	{
+		renderEntity(entity->Children()[i]);
+	}
+}
+
+void Renderer::renderSprite(Sprite* sprite, glm::mat4 MVP)
+{
 	// Send our transformation to the currently bound shader, in the "MVP" uniform
 	GLuint matrixID = glGetUniformLocation(_programID, "MVP");
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);
 
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _resMan.GetTexture(sprite->TextureName(), sprite));
+	Sprite* s = _resMan.GetTexture(sprite->TextureName());
+	sprite->SetUp(s->vertexbuffer(), s->uvbuffer(), s->getTexture(), s->width(), s->height());
+	s = nullptr;
+	glBindTexture(GL_TEXTURE_2D, sprite->getTexture());
 	// Set our "textureSampler" sampler to use Texture Unit 0
 	GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
 	glUniform1i(textureID, 0);

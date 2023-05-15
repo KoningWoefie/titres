@@ -12,7 +12,6 @@ public:
 	virtual ~Sprite();
 
 	GLuint getTexture() { return _texture; };
-	void setTexture(GLuint texture) { _texture = texture; }
 	GLuint vertexbuffer() { return _vertexbuffer; };
 	GLuint uvbuffer() { return _uvbuffer; };
 
@@ -25,11 +24,11 @@ public:
 
 	std::string TextureName() { return _textureName; };
 
-	GLuint loadTGA();
+	GLuint loadTGA(const std::string& imagepath);
+	void createBuffer();
+	void SetUp(GLuint vb, GLuint uv, GLuint texture, unsigned int width, unsigned int height);
 
 private:
-
-	void createBuffer();
 
 	GLuint _texture;
 	GLuint _vertexbuffer;
@@ -37,6 +36,8 @@ private:
 
 	unsigned int _width;
 	unsigned int _height;
+
+	bool setup;
 
 	std::string _textureName;
 };

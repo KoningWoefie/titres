@@ -25,6 +25,7 @@ Sprite::Sprite(const std::string& imagepath)
 	_uvbuffer = 0;
 
 	_textureName = imagepath;
+	setup = false;
 
 	createBuffer();
 }
@@ -73,14 +74,29 @@ void Sprite::createBuffer()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 }
 
-GLuint Sprite::loadTGA()
+void Sprite::SetUp(GLuint vb, GLuint uv, GLuint texture, unsigned int width, unsigned int height)
+{
+	if (setup)
+	{
+		return;
+	}
+	_vertexbuffer = vb;
+	_uvbuffer = uv;
+	_texture = texture;
+	_width = width;
+	_height = height;
+	this->createBuffer();
+	setup = true;
+}
+
+GLuint Sprite::loadTGA(const std::string& imagepath)
 {
 	std::cout << "Loading TGA: " << _textureName << std::endl;
 
 	// Open the file on disk
 	FILE *file;
 
-	file = fopen(_textureName.c_str(), "rb");
+	file = fopen(imagepath.c_str(), "rb");
 
 	if (!file) {
 		std::cout << "error: unable to open file" << std::endl;
@@ -205,5 +221,6 @@ GLuint Sprite::loadTGA()
 	createBuffer();
 
 	// Return the ID of the texture we just created
+	_texture = textureID;
 	return textureID;
 }

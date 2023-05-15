@@ -16,7 +16,8 @@ public:
 	virtual ~Renderer();
 
 	void renderScene(Scene* scene);
-	void renderSprite(Sprite* sprite);
+	void renderEntity(Entity* entity);
+	void renderSprite(Sprite* sprite, glm::mat4 MVP);
 	GLFWwindow* window() { return _window; };
 
 	float updateDeltaTime();

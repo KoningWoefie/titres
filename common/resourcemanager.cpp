@@ -13,16 +13,17 @@ ResourceManager::~ResourceManager()
 	std::cout << "Destroying ResourceManager" << std::endl;
 }
 
-GLuint ResourceManager::GetTexture(const std::string& fileName, Sprite* s)
+Sprite* ResourceManager::GetTexture(const std::string& fileName)
 {
-	if (_textures[fileName] != nullptr)
+	if (_textures[fileName] != NULL)
 	{
-		return _textures[fileName]->getTexture();
+		return _textures[fileName];
 	}
 	else
 	{
-		s->setTexture(s->loadTGA());
+		Sprite* s = new Sprite(fileName);
+		s->loadTGA(fileName);
 		_textures[fileName] = s;
-		return s->getTexture();
+		return s;
 	}
 }
