@@ -19,6 +19,9 @@ Renderer::Renderer()
 	// We get the camera from the scene later
 	_camera = nullptr;
 
+	_viewMatrix = glm::mat4(1.0f);
+	_projectionMatrix = glm::mat4(1.0f);
+
 	// Create window with OpenGL context
 	this->init();
 }
@@ -97,16 +100,16 @@ void Renderer::renderScene(Scene* scene)
 	// get camera from scene and update
 	_camera = scene->camera();
 
-	glm::mat4 mm = glm::mat4(1.0f);
+	_viewMatrix = _camera->getViewMatrix();
+	_projectionMatrix = _camera->getProjectionMatrix();
+
+	glm::mat4 im = glm::mat4(1.0f);
 
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Render all te sprites
-	for (Entity* entity : scene->Children())
-	{
-		renderEntity(entity, mm);
-	}
+	
+	//render the scene with all its children
+	renderEntity(scene, im);
 
 	// Swap buffers
 	glfwSwapBuffers(this->window());
@@ -120,31 +123,30 @@ void Renderer::renderEntity(Entity* entity, glm::mat4 PaMa)
 	glm::mat4 projectionMatrix = _camera->getProjectionMatrix();
 
 	// Build the Model matrix from Sprite transform
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(entity->position.x, entity->position.y, 0.0f));
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(entity->position));
 	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, entity->rotation);
-	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(entity->scale.x, entity->scale.y, 1.0f));
+	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(entity->scale.x, entity->scale.y, entity->scale.z));
 
 	glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
-	// Build MVP matrix
-	glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
-
-	glm::mat4 MAT = MVP * PaMa;
+	PaMa *= modelMatrix;
 
 	if (entity->ESprite() != nullptr)
 	{
 		entity->UpdateSprite();
-		this->renderSprite(entity->ESprite(), MAT);
+		this->renderSprite(entity->ESprite(), PaMa);
 	}
 
 	for (int i = 0; i < entity->Children().size(); i++)
 	{
-		renderEntity(entity->Children()[i], modelMatrix);
+		renderEntity(entity->Children()[i], PaMa);
 	}
 }
 
-void Renderer::renderSprite(Sprite* sprite, glm::mat4 MVP)
+void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 {
+	// Build MVP matrix
+	glm::mat4 MVP = _projectionMatrix * _viewMatrix * mm;
 	// Send our transformation to the currently bound shader, in the "MVP" uniform
 	GLuint matrixID = glGetUniformLocation(_programID, "MVP");
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);

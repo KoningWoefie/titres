@@ -37,6 +37,9 @@ private:
 	Camera* _camera; // reference to scene->camera
 
 	ResourceManager _resMan;
+
+	glm::mat4 _viewMatrix;
+	glm::mat4 _projectionMatrix;
 };
 
 #endif /* RENDERER_H */
