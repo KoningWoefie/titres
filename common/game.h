@@ -10,6 +10,7 @@
 #include <common/config.h>
 #include <common/renderer.h>
 #include <common/camera.h>
+#include <common/inputmanager.h>
 
 class Game 
 { 
@@ -23,6 +24,7 @@ public:
 
 private:
 	Renderer renderer;
+	InputManager* _inMan = InputManager::input();
 	bool running;
 }; 
 

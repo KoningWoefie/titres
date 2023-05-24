@@ -63,6 +63,8 @@ set(ALL_GRAPHICS_LIBS
 
 # Common (libcommon.a)
 add_library(common # ar rcs libcommon.a
+	common/config.h
+	common/sh2dconfig.h
 	common/camera.h
 	common/camera.cpp
 	common/renderer.h
@@ -73,6 +75,8 @@ add_library(common # ar rcs libcommon.a
 	common/sprite.cpp
 	common/resourcemanager.cpp
 	common/resourcemanager.h
+	common/inputmanager.cpp
+	common/inputmanager.h
 	common/entity.cpp
 	common/entity.h
 	common/game.cpp
