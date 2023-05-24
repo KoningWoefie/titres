@@ -6,7 +6,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		std::vector<Block*> row;
 		for (int x = 0; x < gridSizeX; x++)
 		{
-			Block* b = new Block(x * 16 + 8, y * 16 + 8);
+			Block* b = new Block(x * 32 + 16, y * 32 + 16);
 			row.push_back(b);
 			this->AddChild(b);
 		}
