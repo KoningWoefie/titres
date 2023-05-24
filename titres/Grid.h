@@ -14,6 +14,14 @@ public:
 
 	std::vector<std::vector<Block*>> grid;
 
+	void SetFallingBlock(Block* fb) { _fallingBlock = fb; };
+
 private:
+	void moveBlock();
+
+	Block* _fallingBlock;
+
+	int _gridSizeX;
+	int _gridSizeY;
 }; 
 #endif // Grid_H 
