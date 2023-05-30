@@ -3,6 +3,7 @@
 
 #include <common/entity.h>
 #include "Block.h"
+#include "Piece.h"
 
 class Grid : public Entity
 { 
@@ -14,12 +15,12 @@ public:
 
 	std::vector<std::vector<Block*>> grid;
 
-	void SetFallingBlock(Block* fb) { _fallingBlock = fb; };
+	void SetFallingBlock(Piece* fb) { _fallingBlock = fb; };
 
 private:
 	void moveBlock();
 
-	Block* _fallingBlock;
+	Piece* _fallingBlock;
 
 	int _gridSizeX;
 	int _gridSizeY;

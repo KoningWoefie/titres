@@ -2,12 +2,10 @@
 
 Grid::Grid(int gridSizeX, int gridSizeY) 
 {
-	_gridSizeX = gridSizeX;
-	_gridSizeY = gridSizeY;
+	_gridSizeX = gridSizeX - 1;
+	_gridSizeY = gridSizeY - 1;
 
-	_fallingBlock = new Block(5*32+16, 16);
-	_fallingBlock->setIndices(5, 0);
-	_fallingBlock->AddSprite("assets/block.tga");
+	_fallingBlock = new Piece(0);
 
 	for (int y = 0; y < gridSizeY; y++)
 	{
@@ -30,27 +28,41 @@ Grid::~Grid()
 
 void Grid::moveBlock()
 {
-	int indexX = _fallingBlock->getIndexX();
-	int indexY = _fallingBlock->getIndexY();
+	int indices[4] = {-1,-1,-1,-1};
 	if (input()->getKeyDown(Left))
 	{
-		if (indexX == 0)
+		for (int i = 0; i < 4; i++)
 		{
-			return;
+			int indexX = _fallingBlock->Blocks()[i]->getIndexX();
+			if (indexX == 0)
+			{
+				return;
+			}
+			indexX -= 1;
+			indices[i] = indexX;
 		}
-		indexX -= 1;
 	}
 	if (input()->getKeyDown(Right))
 	{
-		if (indexX == _gridSizeX - 1)
+		for (int i = 0; i < 4; i++)
 		{
-			return;
+			int indexX = _fallingBlock->Blocks()[i]->getIndexX();
+			if (indexX == _gridSizeX)
+			{
+				return;
+			}
+			indexX += 1;
+			indices[i] = indexX;
 		}
-		indexX += 1;
 	}
-
-	_fallingBlock->position = grid[indexY][indexX]->position;
-	_fallingBlock->setIndexX(indexX);
+	if (indices[0] != -1)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			_fallingBlock->Blocks()[i]->position = grid[_fallingBlock->Blocks()[i]->getIndexY()][indices[i]]->position;
+			_fallingBlock->Blocks()[i]->setIndexX(indices[i]);
+		}
+	}
 }
 
 void Grid::update(float deltaTime)

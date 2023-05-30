@@ -101,6 +101,8 @@ add_executable(titres # g++ titres/demo.cpp -o titres
 	titres/Grid.h
 	titres/Block.cpp
 	titres/Block.h
+	titres/Piece.cpp
+	titres/Piece.h
 )
 target_link_libraries(demo # g++ -lcommon
 	common
