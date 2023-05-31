@@ -5,8 +5,6 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	_gridSizeX = gridSizeX - 1;
 	_gridSizeY = gridSizeY - 1;
 
-	_fallingBlock = new Piece(0);
-
 	for (int y = 0; y < gridSizeY; y++)
 	{
 		std::vector<Block*> row;
@@ -20,7 +18,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		grid.push_back(row);
 	}
 
-	this->AddChild(_fallingBlock);
+	this->makeFallingPiece(1);
 }
 Grid::~Grid() 
 {
@@ -59,8 +57,30 @@ void Grid::moveBlock()
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			_fallingBlock->Blocks()[i]->position = grid[_fallingBlock->Blocks()[i]->getIndexY()][indices[i]]->position;
+			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][indices[i]]->position);
 			_fallingBlock->Blocks()[i]->setIndexX(indices[i]);
+		}
+	}
+}
+
+void Grid::makeFallingPiece(int i)
+{
+	_fallingBlock = new Piece(i);
+	for (int i = 0; i < 4; i++)
+	{
+		_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);
+	}
+	this->AddChild(_fallingBlock);
+}
+
+void Grid::rotateFallingPiece()
+{
+	if (input()->getKeyDown(KEY_Z))
+	{
+		_fallingBlock->rotatePiece();
+		for (int i = 0; i < 4; i++)
+		{
+			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);
 		}
 	}
 }
@@ -68,4 +88,5 @@ void Grid::moveBlock()
 void Grid::update(float deltaTime)
 {
 	moveBlock();
+	rotateFallingPiece();
 }

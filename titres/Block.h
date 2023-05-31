@@ -18,6 +18,9 @@ public:
 	void setIndexY(int newIndex) { _index_Y = newIndex; };
 
 	void setIndices(int newIndex_X, int newIndex_Y) { _index_X = newIndex_X; _index_Y = newIndex_Y; }
+	void setIndicesSortOf(int newIndex_X, int newIndex_Y) { _index_X += newIndex_X; _index_Y += newIndex_Y; }
+
+	void updatePos(glm::vec3 newPos);
 
 private:
 	int _index_X;

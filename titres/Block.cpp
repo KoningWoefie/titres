@@ -15,3 +15,8 @@ void Block::update(float deltaTime)
 {
 
 }
+
+void Block::updatePos(glm::vec3 newPos)
+{
+	this->position = newPos;
+}

@@ -17,6 +17,10 @@ public:
 
 	void SetFallingBlock(Piece* fb) { _fallingBlock = fb; };
 
+	void makeFallingPiece(int i);
+
+	void rotateFallingPiece();
+
 private:
 	void moveBlock();
 
