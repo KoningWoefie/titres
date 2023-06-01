@@ -2,14 +2,15 @@
 #define GRID_H 
 
 #include <common/entity.h>
+#include <common/timer.h>
 #include "Block.h"
 #include "Piece.h"
 
 class Grid : public Entity
 { 
 public: 
-    Grid(int gridSizeX, int gridSizeY); 
-    virtual ~Grid(); 
+    Grid(int gridSizeX, int gridSizeY);
+    virtual ~Grid();
 
 	virtual void update(float deltaTime);
 
@@ -21,12 +22,19 @@ public:
 
 	void rotateFallingPiece();
 
+	void fallFallingPiece();
+
+	void removeFallingPiece();
+
 private:
 	void moveBlock();
 
 	Piece* _fallingBlock;
+	Timer* t;
 
 	int _gridSizeX;
 	int _gridSizeY;
+
+	bool _pieceLanded;
 }; 
 #endif // Grid_H 
