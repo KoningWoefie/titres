@@ -23,6 +23,8 @@ public:
 
 	void AddChild(Entity* e);
 
+	void RemoveChild(Entity* e);
+
 	InputManager* input() { return _input; };
 
 	void AddSprite(const std::string& fileName);

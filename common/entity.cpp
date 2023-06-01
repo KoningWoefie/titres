@@ -20,6 +20,18 @@ void Entity::AddChild(Entity* e)
 	e->parent = this;
 }
 
+void Entity::RemoveChild(Entity* e)
+{
+	for (int i = children.size() - 1; i >= 0; i--)
+	{
+		if (children[i] == e)
+		{
+			children.erase(children.begin() + i);
+			return;
+		}
+	}
+}
+
 void Entity::AddSprite(const std::string& fileName)
 {
 	if(sprite != nullptr)
