@@ -2,6 +2,7 @@
 #define MYSCENE_H
 
 #include <common/scene.h>
+#include <common/timer.h>
 #include "Grid.h"
 #include "MyEntity.h"
 
@@ -17,5 +18,6 @@ public:
 private:
 	MyEntity* kingkong;
 	Grid* grid;
+	Timer* t;
 };
 #endif // !MYSCENE_H

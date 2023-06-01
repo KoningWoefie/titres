@@ -81,6 +81,8 @@ add_library(common # ar rcs libcommon.a
 	common/entity.h
 	common/game.cpp
 	common/game.h
+	common/timer.cpp
+	common/timer.h
 )
 
 # Demo
