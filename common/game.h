@@ -24,6 +24,9 @@ public:
 
 private:
 	Renderer renderer;
+
+	void UpdateEntity(Entity* e, float deltaTime);
+
 	InputManager* _inMan = InputManager::input();
 	bool running;
 }; 

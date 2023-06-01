@@ -15,11 +15,7 @@ void Game::Run(Scene* scene)
 	_inMan->update(renderer.window());
 
 	// Update the scene
-	scene->update(dt); //(and make Scene abstract?)
-	for (Entity* e : scene->Children())
-	{
-		e->update(dt);
-	}
+	this->UpdateEntity(scene, dt);
 
 	// Render the scene
 	renderer.renderScene(scene);
@@ -31,5 +27,14 @@ void Game::Run(Scene* scene)
 	else
 	{
 		running = false;
+	}
+}
+
+void Game::UpdateEntity(Entity* e, float deltaTime)
+{
+	e->update(deltaTime);
+	for (Entity* ce : e->Children())
+	{
+		UpdateEntity(ce, deltaTime);
 	}
 }
