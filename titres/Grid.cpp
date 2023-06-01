@@ -83,7 +83,15 @@ void Grid::rotateFallingPiece()
 {
 	if (input()->getKeyDown(KEY_Z))
 	{
-		_fallingBlock->rotatePiece();
+		_fallingBlock->rotateCW();
+		for (int i = 0; i < 4; i++)
+		{
+			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);
+		}
+	}
+	if (input()->getKeyDown(KEY_X))
+	{
+		_fallingBlock->rotateCCW();
 		for (int i = 0; i < 4; i++)
 		{
 			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);

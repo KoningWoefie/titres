@@ -16,6 +16,9 @@ public:
 
 	void rotatePiece();
 
+	void rotateCW();
+	void rotateCCW();
+
 private:
 	std::vector<Block*> _blocks;
 	Block* _anchorBlock;

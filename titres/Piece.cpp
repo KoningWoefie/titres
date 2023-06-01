@@ -322,3 +322,29 @@ void Piece::rotatePiece()
 		rotationSortOf = -1;
 	}
 }
+
+void Piece::rotateCW()
+{
+	if (rotationSortOf == (_positions.size() - 1))
+	{
+		rotationSortOf = -1;
+	}
+	rotationSortOf++;
+	for (int i = 0; i < 4; i++)
+	{
+		_blocks[i]->setIndicesSortOf(_positions[rotationSortOf][i][0], _positions[rotationSortOf][i][1]);
+	}
+}
+
+void Piece::rotateCCW()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		_blocks[i]->setIndicesSortOf(_positions[rotationSortOf][i][0] * -1, _positions[rotationSortOf][i][1] * -1);
+	}
+	rotationSortOf--;
+	if (rotationSortOf == -1)
+	{
+		rotationSortOf = _positions.size() - 1;
+	}
+}
