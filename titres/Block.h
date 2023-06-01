@@ -12,18 +12,24 @@ public:
 	virtual void update(float deltaTime);
 
 	int getIndexX() { return _index_X; };
-	void setIndexX(int newIndex) { _index_X = newIndex; };
+	void setIndexX(int newIndex) { _index_X = newIndex; actuallySetIndices(); };
 
 	int getIndexY() { return _index_Y; };
-	void setIndexY(int newIndex) { _index_Y = newIndex; };
+	void setIndexY(int newIndex) { _index_Y = newIndex; actuallySetIndices(); };
 
-	void setIndices(int newIndex_X, int newIndex_Y) { _index_X = newIndex_X; _index_Y = newIndex_Y; }
-	void setIndicesSortOf(int newIndex_X, int newIndex_Y) { _index_X += newIndex_X; _index_Y += newIndex_Y; }
+	int* getIndices() { return indices; };
+
+	void setIndices(int newIndex_X, int newIndex_Y) { _index_X = newIndex_X; _index_Y = newIndex_Y; actuallySetIndices(); }
+	void setIndicesSortOf(int newIndex_X, int newIndex_Y) { _index_X += newIndex_X; _index_Y += newIndex_Y; actuallySetIndices(); }
+
+	void actuallySetIndices() { indices[0] = _index_X; indices[1] = _index_Y; };
 
 	void updatePos(glm::vec3 newPos);
 
 private:
 	int _index_X;
 	int _index_Y;
+
+	int indices[2];
 }; 
 #endif // Block_H 

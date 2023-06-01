@@ -14,8 +14,6 @@ public:
 
 	std::vector<Block*> Blocks() { return _blocks; };
 
-	void rotatePiece();
-
 	void rotateCW();
 	void rotateCCW();
 

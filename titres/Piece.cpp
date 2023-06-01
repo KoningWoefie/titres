@@ -9,7 +9,10 @@ Piece::Piece(int i)
 	case 0:
 	{
 		//make O piece
-
+		_positions =
+		{
+			{	{0,0}, {0,0}, {0,0}, {0,0}	}
+		};
 		break;
 	}
 	case 1:
@@ -136,10 +139,10 @@ void Piece::createPiece(int i)
 			b3->AddSprite("assets/block.tga");
 			b4->AddSprite("assets/block.tga");
 
-			b1->setIndices(3, 4);
-			b2->setIndices(4, 4);
-			b3->setIndices(5, 4);
-			b4->setIndices(6, 4);
+			b1->setIndices(3, 0);
+			b2->setIndices(4, 0);
+			b3->setIndices(5, 0);
+			b4->setIndices(6, 0);
 
 			_blocks.push_back(b1);
 			_blocks.push_back(b2);
@@ -196,10 +199,10 @@ void Piece::createPiece(int i)
 			b3->AddSprite("assets/block.tga");
 			b4->AddSprite("assets/block.tga");
 
-			b1->setIndices(6, 3);
-			b2->setIndices(6, 4);
-			b3->setIndices(5, 3);
-			b4->setIndices(4, 3);
+			b1->setIndices(6, 0);
+			b2->setIndices(6, 1);
+			b3->setIndices(5, 0);
+			b4->setIndices(4, 0);
 
 			_anchorBlock = b3;
 
@@ -227,10 +230,10 @@ void Piece::createPiece(int i)
 			b3->AddSprite("assets/block.tga");
 			b4->AddSprite("assets/block.tga");
 
-			b1->setIndices(4, 2);
-			b2->setIndices(5, 3);
-			b3->setIndices(5, 2);
-			b4->setIndices(6, 2);
+			b1->setIndices(4, 0);
+			b2->setIndices(5, 1);
+			b3->setIndices(5, 0);
+			b4->setIndices(6, 0);
 
 			_anchorBlock = b3;
 
@@ -258,10 +261,10 @@ void Piece::createPiece(int i)
 			b3->AddSprite("assets/block.tga");
 			b4->AddSprite("assets/block.tga");
 
-			b1->setIndices(4, 2);
-			b2->setIndices(5, 2);
-			b3->setIndices(5, 3);
-			b4->setIndices(6, 3);
+			b1->setIndices(4, 0);
+			b2->setIndices(5, 0);
+			b3->setIndices(5, 1);
+			b4->setIndices(6, 1);
 
 			_anchorBlock = b3;
 
@@ -307,19 +310,6 @@ void Piece::createPiece(int i)
 			this->AddChild(b4);
 			break;
 		}
-	}
-}
-
-void Piece::rotatePiece()
-{
-	rotationSortOf++;
-	for (int i = 0; i < 4; i++)
-	{
-		_blocks[i]->setIndicesSortOf(_positions[rotationSortOf][i][0], _positions[rotationSortOf][i][1]);
-	}
-	if (rotationSortOf == (_positions.size() - 1))
-	{
-		rotationSortOf = -1;
 	}
 }
 

@@ -24,7 +24,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		grid.push_back(row);
 	}
 
-	this->makeFallingPiece(2);
+	this->makeFallingPiece(1);
 }
 Grid::~Grid() 
 {
@@ -84,17 +84,51 @@ void Grid::rotateFallingPiece()
 	if (input()->getKeyDown(KEY_Z))
 	{
 		_fallingBlock->rotateCW();
+		bool canTurn = true;
+		int indicesList[4][2] = { {-1,-1}, {-1,-1}, {-1,-1}, {-1,-1} };
 		for (int i = 0; i < 4; i++)
 		{
-			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);
+			int indices[2] = { _fallingBlock->Blocks()[i]->getIndices()[0], _fallingBlock->Blocks()[i]->getIndices()[1] };
+			if ((indices[0] < 0 || indices[0] > _gridSizeX) || (indices[1] < 0 || indices[1] > _gridSizeY))
+			{
+				_fallingBlock->rotateCCW();
+				canTurn = false;
+				return;
+			}
+			indicesList[i][0] = indices[0];
+			indicesList[i][1] = indices[1];
+		}
+		if (canTurn)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_fallingBlock->Blocks()[i]->updatePos(grid[indicesList[i][1]][indicesList[i][0]]->position);
+			}
 		}
 	}
 	if (input()->getKeyDown(KEY_X))
 	{
 		_fallingBlock->rotateCCW();
+		bool canTurn = true;
+		int indicesList[4][2] = { {-1,-1}, {-1,-1}, {-1,-1}, {-1,-1} };
 		for (int i = 0; i < 4; i++)
 		{
-			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);
+			int indices[2] = { _fallingBlock->Blocks()[i]->getIndices()[0], _fallingBlock->Blocks()[i]->getIndices()[1] };
+			if ((indices[0] < 0 || indices[0] > _gridSizeX) || (indices[1] < 0 || indices[1] > _gridSizeY))
+			{
+				_fallingBlock->rotateCW();
+				canTurn = false;
+				return;
+			}
+			indicesList[i][0] = indices[0];
+			indicesList[i][1] = indices[1];
+		}
+		if (canTurn)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_fallingBlock->Blocks()[i]->updatePos(grid[indicesList[i][1]][indicesList[i][0]]->position);
+			}
 		}
 	}
 }
