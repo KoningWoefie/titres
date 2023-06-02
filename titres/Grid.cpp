@@ -38,7 +38,8 @@ void Grid::moveBlock()
 		for (int i = 0; i < 4; i++)
 		{
 			int indexX = _fallingBlock->Blocks()[i]->getIndexX();
-			if (indexX == 0)
+			int indexY = _fallingBlock->Blocks()[i]->getIndexY();
+			if (indexX == 0 || grid[indexY][indexX - 1]->getOccupied())
 			{
 				return;
 			}
@@ -51,7 +52,8 @@ void Grid::moveBlock()
 		for (int i = 0; i < 4; i++)
 		{
 			int indexX = _fallingBlock->Blocks()[i]->getIndexX();
-			if (indexX == _gridSizeX)
+			int indexY = _fallingBlock->Blocks()[i]->getIndexY();
+			if (indexX == _gridSizeX || grid[indexY][indexX + 1]->getOccupied())
 			{
 				return;
 			}
@@ -89,7 +91,7 @@ void Grid::rotateFallingPiece()
 		for (int i = 0; i < 4; i++)
 		{
 			int indices[2] = { _fallingBlock->Blocks()[i]->getIndices()[0], _fallingBlock->Blocks()[i]->getIndices()[1] };
-			if ((indices[0] < 0 || indices[0] > _gridSizeX) || (indices[1] < 0 || indices[1] > _gridSizeY))
+			if ((indices[0] < 0 || indices[0] > _gridSizeX) || (indices[1] < 0 || indices[1] > _gridSizeY) || (grid[indices[1]][indices[0]]->getOccupied()))
 			{
 				_fallingBlock->rotateCCW();
 				canTurn = false;
@@ -149,7 +151,8 @@ void Grid::fallFallingPiece()
 		for (int i = 0; i < 4; i++)
 		{
 			int indexY = _fallingBlock->Blocks()[i]->getIndexY();
-			if (indexY == _gridSizeY)
+			int indexX = _fallingBlock->Blocks()[i]->getIndexX();
+			if (indexY == _gridSizeY || grid[indexY + 1][indexX]->getOccupied())
 			{
 				_pieceLanded = true;
 				return;
@@ -176,6 +179,7 @@ void Grid::removeFallingPiece()
 		for (int i = 0; i < 4; i++)
 		{
 			this->AddChild(_fallingBlock->Blocks()[i]);
+			grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->setOccupied(true);
 			_fallingBlock->RemoveChild(_fallingBlock->Blocks()[i]);
 		}
 

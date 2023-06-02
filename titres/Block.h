@@ -26,9 +26,14 @@ public:
 
 	void updatePos(glm::vec3 newPos);
 
+	bool getOccupied() { return _occupied; };
+	void setOccupied(bool o) { _occupied = o; };
+
 private:
 	int _index_X;
 	int _index_Y;
+
+	bool _occupied;
 
 	int indices[2];
 }; 
