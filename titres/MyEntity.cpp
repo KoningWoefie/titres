@@ -2,7 +2,7 @@
 
 MyEntity::MyEntity()
 {
-	this->AddSprite("assets/kingkong.tga");
+	this->AddSprite("assets/MainSceneBackground.tga");
 }
 
 MyEntity::~MyEntity()

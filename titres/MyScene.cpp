@@ -2,16 +2,16 @@
 
 MyScene::MyScene() : Scene()
 {
-	grid = new Grid(10, 10);
-	kingkong = new MyEntity();
+	grid = new Grid(10, 22);
+	grid->position = glm::vec3(484.0f, 164.0f, 0.0f);
+	background = new MyEntity();
+	background->scale = glm::vec3(4.0f, 4.0f, 1.0f);
+	background->position = glm::vec3(640.0f, 480.0f, 0.0f);
 	t = new Timer();
-	/*this->AddChild(t);
-	t->StartTimer();*/
 
-	kingkong->position = glm::vec3(400.0f, 300.0f, 0.0f);
-
-	this->AddChild(kingkong);
 	this->AddChild(grid);
+
+	this->AddChild(background);
 }
 
 MyScene::~MyScene()

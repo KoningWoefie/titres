@@ -16,7 +16,7 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	MyEntity* kingkong;
+	MyEntity* background;
 	Grid* grid;
 	Timer* t;
 };
