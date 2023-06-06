@@ -26,8 +26,6 @@ Sprite::Sprite(const std::string& imagepath)
 
 	_textureName = imagepath;
 	setup = false;
-
-	createBuffer();
 }
 
 Sprite::~Sprite()

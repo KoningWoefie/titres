@@ -19,11 +19,8 @@ Sprite* ResourceManager::GetTexture(const std::string& fileName)
 	{
 		return _textures[fileName];
 	}
-	else
-	{
-		Sprite* s = new Sprite(fileName);
-		s->loadTGA(fileName);
-		_textures[fileName] = s;
-		return s;
-	}
+	Sprite* s = new Sprite(fileName);
+	s->loadTGA(fileName);
+	_textures[fileName] = s;
+	return s;
 }

@@ -153,9 +153,7 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
-	Sprite* s = _resMan.GetTexture(sprite->TextureName());
-	sprite->SetUp(s->vertexbuffer(), s->uvbuffer(), s->getTexture(), s->width(), s->height());
-	s = nullptr;
+	sprite = _resMan.GetTexture(sprite->TextureName());
 	glBindTexture(GL_TEXTURE_2D, sprite->getTexture());
 	// Set our "textureSampler" sampler to use Texture Unit 0
 	GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
