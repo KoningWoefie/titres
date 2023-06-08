@@ -26,15 +26,24 @@ public:
 
 	void removeFallingPiece();
 
+	void checkGameOver();
+
+	void clearLine();
+
+	void clearGrid();
+
 private:
 	void moveBlock();
 
 	Piece* _fallingBlock;
 	Timer* t;
 
+	std::vector<std::vector<Block*>> _fallenBlocks;
+
 	int _gridSizeX;
 	int _gridSizeY;
 
 	bool _pieceLanded;
+	bool _gameOver;
 }; 
 #endif // Grid_H 

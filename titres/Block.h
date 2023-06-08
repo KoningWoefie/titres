@@ -6,8 +6,8 @@
 class Block : public Entity
 { 
 public: 
-    Block(float x, float y); 
-    virtual ~Block(); 
+    Block(float x, float y);
+    virtual ~Block();
 
 	virtual void update(float deltaTime);
 
