@@ -37,6 +37,7 @@ private:
 
 	Piece* _fallingBlock;
 	Timer* t;
+	Timer* inputDelay;
 
 	std::vector<std::vector<Block*>> _fallenBlocks;
 

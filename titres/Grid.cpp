@@ -13,8 +13,11 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	_gameOver = false;
 
 	t = new Timer();
+	inputDelay = new Timer();
 	this->AddChild(t);
+	this->AddChild(inputDelay);
 	t->TogglePause();
+	inputDelay->StartTimer();
 	srand(time(NULL));
 
 	for (int y = 0; y < gridSizeY; y++)
@@ -125,7 +128,7 @@ void Grid::clearGrid()
 void Grid::moveBlock()
 {
 	int indices[4] = {-1,-1,-1,-1};
-	if (input()->getKeyDown(Left))
+	if (input()->getKeyDown(Left) || (input()->getKey(Left) && inputDelay->Seconds() >= 0.2f ))
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -139,7 +142,7 @@ void Grid::moveBlock()
 			indices[i] = indexX;
 		}
 	}
-	if (input()->getKeyDown(Right))
+	if (input()->getKeyDown(Right) || (input()->getKey(Right) && inputDelay->Seconds() >= 0.2f))
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -159,6 +162,7 @@ void Grid::moveBlock()
 		{
 			_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][indices[i]]->position);
 			_fallingBlock->Blocks()[i]->setIndexX(indices[i]);
+			inputDelay->StartTimer();
 		}
 	}
 }
@@ -208,7 +212,7 @@ void Grid::rotateFallingPiece()
 		for (int i = 0; i < 4; i++)
 		{
 			int indices[2] = { _fallingBlock->Blocks()[i]->getIndices()[0], _fallingBlock->Blocks()[i]->getIndices()[1] };
-			if ((indices[0] < 0 || indices[0] > _gridSizeX) || (indices[1] < 0 || indices[1] > _gridSizeY))
+			if ((indices[0] < 0 || indices[0] > _gridSizeX) || (indices[1] < 0 || indices[1] > _gridSizeY) || (grid[indices[1]][indices[0]]->getOccupied()))
 			{
 				_fallingBlock->rotateCW();
 				canTurn = false;
