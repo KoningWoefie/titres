@@ -6,7 +6,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	_gridSizeY = gridSizeY - 1;
 
 	_pieceLanded = false;
-	_gameOver = false;
+	_gameOver = true;
 
 	t = new Timer();
 	this->AddChild(t);

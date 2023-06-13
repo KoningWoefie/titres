@@ -28,8 +28,8 @@ public:
 	InputManager* input() { return _input; };
 
 	void AddSprite(const std::string& fileName);
-
-	void UpdateSprite();
+	void AddSpriteSheet(const std::string& fileName, float uvHeight, float uvWidth);
+	std::vector<Sprite*> GetSpriteSheet() { return spriteSheet; }
 
 	std::vector<Entity*> Children() { return children; };
 	Sprite* ESprite() { return sprite; }
@@ -42,6 +42,7 @@ public:
 
 protected:
 	std::vector<Entity*> children;
+	std::vector<Sprite*> spriteSheet;
 	Sprite* sprite;
 
 private:

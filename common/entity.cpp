@@ -42,8 +42,12 @@ void Entity::AddSprite(const std::string& fileName)
 	sprite = new Sprite(fileName);
 }
 
-void Entity::UpdateSprite()
+void Entity::AddSpriteSheet(const std::string& fileName, float uvHeight, float uvWidth)
 {
-	sprite->position = this->position;
-	sprite->rotation = this->rotation;
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+	sprite = new Sprite(fileName, uvHeight, uvWidth);
 }

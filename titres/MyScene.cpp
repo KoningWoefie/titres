@@ -8,10 +8,15 @@ MyScene::MyScene() : Scene()
 	background->scale = glm::vec3(4.0f, 4.0f, 1.0f);
 	background->position = glm::vec3(640.0f, 480.0f, 0.0f);
 	t = new Timer();
+	//text = new Text();
+	//text->position = glm::vec3(WIDTH/2, HEIGHT/2, 0.0f);
+	//text->Message("Hello world");
 
 	this->AddChild(grid);
 
 	this->AddChild(background);
+
+	//this->AddChild(text);
 }
 
 MyScene::~MyScene()

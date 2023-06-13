@@ -3,6 +3,7 @@
 
 #include <common/scene.h>
 #include <common/timer.h>
+#include <common/text.h>
 #include "Grid.h"
 #include "MyEntity.h"
 
@@ -19,5 +20,6 @@ private:
 	MyEntity* background;
 	Grid* grid;
 	Timer* t;
+	//Text* text;
 };
 #endif // !MYSCENE_H

@@ -83,6 +83,8 @@ add_library(common # ar rcs libcommon.a
 	common/game.h
 	common/timer.cpp
 	common/timer.h
+	common/text.cpp
+	common/text.h
 )
 
 # Demo
@@ -122,5 +124,9 @@ file(
 )
 file(
 	COPY common/shaders
+	DESTINATION ${CMAKE_BINARY_DIR}
+)
+file(
+	COPY common/fonts
 	DESTINATION ${CMAKE_BINARY_DIR}
 )

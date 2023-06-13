@@ -13,9 +13,9 @@
 Sprite::Sprite(const std::string& imagepath)
 {
 	// Transform
-	position = glm::vec3(0.0f, 0.0f, 0.0f);
-	rotation = 0.0f;
-	scale = glm::vec3(1.0f, 1.0f, 1.0f);
+	spritePosition = glm::vec2(0.0f, 0.0f);
+	spriteRotation = 0.0f;
+	spriteScale = glm::vec2(1.0f, 1.0f);
 
 	// these will be set correctly in loadTGA()
 	_width = 0;
@@ -24,8 +24,34 @@ Sprite::Sprite(const std::string& imagepath)
 	_vertexbuffer = 0;
 	_uvbuffer = 0;
 
+	_uvOffset = glm::vec2(0.0f, 0.0f);
+
 	_textureName = imagepath;
 	setup = false;
+
+	SetUpUV(1,1);
+}
+
+Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
+{
+	// Transform
+	spritePosition = glm::vec2(0.0f, 0.0f);
+	spriteRotation = 0.0f;
+	spriteScale = glm::vec2(1.0f, 1.0f);
+
+	// these will be set correctly in loadTGA()
+	_width = 0;
+	_height = 0;
+
+	_vertexbuffer = 0;
+	_uvbuffer = 0;
+
+	_uvOffset = glm::vec2(0.0f, 0.0f);
+
+	_textureName = imagepath;
+	setup = false;
+
+	SetUpUV(uvHeight, uvWidth);
 }
 
 Sprite::~Sprite()
@@ -36,29 +62,18 @@ Sprite::~Sprite()
 	glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
 }
 
-void Sprite::createBuffer()
+void Sprite::createBuffer(std::vector<glm::vec2> uv)
 {
 	// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 	// A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
 	GLfloat g_vertex_buffer_data[18] = {
-		 0.5f * _width, -0.5f * _height, 0.0f,
-		-0.5f * _width, -0.5f * _height, 0.0f,
-		-0.5f * _width,  0.5f * _height, 0.0f,
-
-		-0.5f * _width,  0.5f * _height, 0.0f,
-		 0.5f * _width,  0.5f * _height, 0.0f,
-		 0.5f * _width, -0.5f * _height, 0.0f
-	};
-
-	// Two UV coordinates for each vertex.
-	GLfloat g_uv_buffer_data[12] = {
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f
+		 0.5f * spriteSize.x, -0.5f * spriteSize.y, 0.0f,
+		-0.5f * spriteSize.x, -0.5f * spriteSize.y, 0.0f,
+		-0.5f * spriteSize.x,  0.5f * spriteSize.y, 0.0f,
+		
+		-0.5f * spriteSize.x,  0.5f * spriteSize.y, 0.0f,
+		 0.5f * spriteSize.x,  0.5f * spriteSize.y, 0.0f,
+		 0.5f * spriteSize.x, -0.5f * spriteSize.y, 0.0f
 	};
 
 	// Send vertices to GPU
@@ -69,22 +84,50 @@ void Sprite::createBuffer()
 	// Send UV's to GPU
 	glGenBuffers(1, &_uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, _uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, uv.size() * sizeof(glm::vec2), &uv[0], GL_STATIC_DRAW);
 }
 
-void Sprite::SetUp(GLuint vb, GLuint uv, GLuint texture, unsigned int width, unsigned int height)
+void Sprite::SetUpUV(float uvHeight, float uvWidth)
 {
-	if (setup)
-	{
-		return;
-	}
-	_vertexbuffer = vb;
-	_uvbuffer = uv;
+	_uvs.push_back(glm::vec2(uvWidth, uvHeight));
+	_uvs.push_back(glm::vec2(0.0f, uvHeight));
+	_uvs.push_back(glm::vec2(0.0f, 0.0f));
+
+	_uvs.push_back(glm::vec2(0.0f, 0.0f));
+	_uvs.push_back(glm::vec2(uvWidth, 0.0f));
+	_uvs.push_back(glm::vec2(uvWidth, uvHeight));
+
+	_uv = glm::vec2(uvWidth, uvHeight);
+}
+
+void Sprite::SetUpSize(float width, float height, GLuint texture)
+{
+	spriteSize.x = width;
+	spriteSize.y = height;
+
 	_texture = texture;
-	_width = width;
-	_height = height;
-	this->createBuffer();
+
+	if (!setup)
+	{
+		createBuffer(_uvs);
+	}
 	setup = true;
+}
+
+void Sprite::Index(int i)
+{
+	int w = 1.0f / _uv[0];
+	int h = 1.0f / _uv[1];
+
+	if (i >= w * h || i < 0) { std::cout << "You fucking moron" << std::endl; return; };
+
+	int xPos = i % w;
+	int yPos = i / w;
+
+	_uvOffset[0] = xPos * _uv[0];
+	_uvOffset[1] = yPos * _uv[1];
+
+	_index = i;
 }
 
 GLuint Sprite::loadTGA(const std::string& imagepath)
@@ -216,7 +259,10 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 	// OpenGL has now copied the data. Free our own version
 	delete [] data;
 
-	createBuffer();
+	spriteSize.x = _width;
+	spriteSize.y = _height;
+
+	createBuffer(_uvs);
 
 	// Return the ID of the texture we just created
 	_texture = textureID;
