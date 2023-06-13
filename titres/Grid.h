@@ -43,6 +43,8 @@ private:
 	int _gridSizeX;
 	int _gridSizeY;
 
+	float _fallTime;
+
 	bool _pieceLanded;
 	bool _gameOver;
 }; 

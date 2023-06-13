@@ -1,9 +1,13 @@
 #include "Grid.h" 
+#include "sstream"
+#include "fstream"
 
 Grid::Grid(int gridSizeX, int gridSizeY) 
 {
 	_gridSizeX = gridSizeX - 1;
 	_gridSizeY = gridSizeY - 1;
+
+	_fallTime = 0.6f;
 
 	_pieceLanded = false;
 	_gameOver = false;
@@ -11,6 +15,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	t = new Timer();
 	this->AddChild(t);
 	t->TogglePause();
+	srand(time(NULL));
 
 	for (int y = 0; y < gridSizeY; y++)
 	{
@@ -29,7 +34,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		_fallenBlocks.push_back(emptyRow);
 	}
 
-	this->makeFallingPiece(1);
+	this->makeFallingPiece(rand()%7);
 }
 Grid::~Grid() 
 {
@@ -50,6 +55,7 @@ void Grid::clearLine()
 {
 	bool lineCleared = false;
 	int linesCleared = 0;
+	int index = 0;
 	for (int i = grid.size() - 1; i >= 0; i--)
 	{
 		bool no = false;
@@ -69,6 +75,7 @@ void Grid::clearLine()
 				this->RemoveChild(_fallenBlocks[i][j]);
 				delete _fallenBlocks[i][j];
 				_fallenBlocks[i][j] = nullptr;
+				index = i;
 			}
 			lineCleared = true;
 			linesCleared++;
@@ -76,7 +83,7 @@ void Grid::clearLine()
 	}
 	if (lineCleared)
 	{
-		for (int i = grid.size() - 1; i >= 0; i--)
+		for (int i = index; i >= 0; i--)
 		{
 			for (int j = grid[i].size() - 1; j >= 0; j--)
 			{
@@ -239,8 +246,13 @@ void Grid::update(float deltaTime)
 
 void Grid::fallFallingPiece()
 {
+	float fallTime = 0.6f;
+	if (input()->getKey(Down))
+	{
+		fallTime = _fallTime / 16;
+	}
 	int indices[4] = {-1,-1,-1,-1};
-	if (t->Seconds() > 0.1f)
+	if (t->Seconds() > fallTime)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -284,6 +296,6 @@ void Grid::removeFallingPiece()
 		delete _fallingBlock;
 		_fallingBlock = nullptr;
 		_pieceLanded = false;
-		makeFallingPiece(1);
+		makeFallingPiece(rand()%7);
 	}
 }
