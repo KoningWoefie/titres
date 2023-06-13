@@ -6,7 +6,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	_gridSizeY = gridSizeY - 1;
 
 	_pieceLanded = false;
-	_gameOver = true;
+	_gameOver = false;
 
 	t = new Timer();
 	this->AddChild(t);
@@ -53,21 +53,6 @@ void Grid::clearLine()
 	for (int i = grid.size() - 1; i >= 0; i--)
 	{
 		bool no = false;
-		/*if (lineCleared)
-		{
-			for (int j = grid[i].size() - 1; j >= 0; j--)
-			{
-				if (_fallenBlocks[i][j] != nullptr)
-				{
-					grid[i][j]->setOccupied(false);
-					_fallenBlocks[i][j]->setIndexY(_fallenBlocks[i][j]->getIndexY() + linesCleared);
-					grid[i + linesCleared][j]->setOccupied(true);
-					_fallenBlocks[i][j]->updatePos(grid[i + linesCleared][j]->position);
-					_fallenBlocks[i + linesCleared][j] = _fallenBlocks[i][j];
-					_fallenBlocks[i][j] = nullptr;
-				}
-			}
-		}*/
 		for (Block* b : _fallenBlocks[i])
 		{
 			if (b == nullptr)
@@ -117,8 +102,7 @@ void Grid::clearGrid()
 		{
 			this->RemoveChild(_fallenBlocks[i][j]);
 			delete _fallenBlocks[i][j];
-			_fallenBlocks[i][j] = nullptr;
-			_fallenBlocks[i].erase(_fallenBlocks[i].begin() + j);
+			_fallenBlocks[i][j] = nullptr;;
 		}
 	}
 	for (std::vector<Block*> g : grid)
