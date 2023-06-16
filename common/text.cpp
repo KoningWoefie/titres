@@ -17,9 +17,22 @@ void Text::update(float deltaTime)
 
 }
 
+void Text::ClearMessage()
+{
+	for(int i = spriteSheet.size() - 1; i >= 0; i--)
+	{
+		delete spriteSheet[i];
+		spriteSheet[i] = nullptr;
+	}
+	spriteSheet.clear();
+	_message = "";
+}
+
 void Text::Message(std::string m)
 {
+	ClearMessage();
 	_message = m;
+	std::cout << m << std::endl;
 	for (int i = 0; i < m.size(); i++)
 	{
 		float uvH = 1.0f / 8;

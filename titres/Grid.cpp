@@ -7,6 +7,10 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	_gridSizeX = gridSizeX - 1;
 	_gridSizeY = gridSizeY - 1;
 
+	_points = 0;
+	_currentLevel = 1;
+	nextPieceIndex = 0;
+
 	_fallTime = 0.6f;
 
 	_pieceLanded = false;
@@ -39,6 +43,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 
 	this->makeFallingPiece(rand()%7);
 }
+
 Grid::~Grid() 
 {
 }
@@ -59,6 +64,7 @@ void Grid::clearLine()
 	bool lineCleared = false;
 	int linesCleared = 0;
 	int index = 0;
+	std::map<int, int> indices;
 	for (int i = grid.size() - 1; i >= 0; i--)
 	{
 		bool no = false;
@@ -82,25 +88,39 @@ void Grid::clearLine()
 			}
 			lineCleared = true;
 			linesCleared++;
+			_currentLinesCleared++;
+		}
+		else
+		{
+			indices[i] = linesCleared;
 		}
 	}
 	if (lineCleared)
 	{
-		for (int i = index; i >= 0; i--)
+		for (int i = grid.size() - 1; i >= 0; i--)
 		{
 			for (int j = grid[i].size() - 1; j >= 0; j--)
 			{
 				if (_fallenBlocks[i][j] != nullptr)
 				{
 					grid[i][j]->setOccupied(false);
-					_fallenBlocks[i][j]->setIndexY(_fallenBlocks[i][j]->getIndexY() + linesCleared);
-					grid[i + linesCleared][j]->setOccupied(true);
-					_fallenBlocks[i][j]->updatePos(grid[i + linesCleared][j]->position);
-					_fallenBlocks[i + linesCleared][j] = _fallenBlocks[i][j];
+					_fallenBlocks[i][j]->setIndexY(_fallenBlocks[i][j]->getIndexY() + indices[i]);
+					grid[i + indices[i]][j]->setOccupied(true);
+					_fallenBlocks[i][j]->updatePos(grid[i + indices[i]][j]->position);
+					_fallenBlocks[i + indices[i]][j] = _fallenBlocks[i][j];
 					_fallenBlocks[i][j] = nullptr;
 				}
 			}
 		}
+		GivePoints(linesCleared);
+	}
+}
+
+void Grid::LevelUp()
+{
+	if (_currentLinesCleared >= _currentLevel * 5)
+	{
+		_currentLevel++;
 	}
 }
 
@@ -167,6 +187,35 @@ void Grid::moveBlock()
 	}
 }
 
+void Grid::GivePoints(int lC)
+{
+	int points = 0;
+	switch (lC)
+	{
+		case 1:
+		{
+			points = 40 * (_currentLevel + 1);
+			break;
+		}
+		case 2:
+		{
+			points = 100 * (_currentLevel + 1);
+			break;
+		}
+		case 3:
+		{
+			points = 300 * (_currentLevel + 1);
+			break;
+		}
+		case 4:
+		{
+			points = 1200 * (_currentLevel + 1);
+			break;
+		}
+	}
+	_points += points;
+}
+
 void Grid::makeFallingPiece(int i)
 {
 	_fallingBlock = new Piece(i);
@@ -175,6 +224,7 @@ void Grid::makeFallingPiece(int i)
 		_fallingBlock->Blocks()[i]->updatePos(grid[_fallingBlock->Blocks()[i]->getIndexY()][_fallingBlock->Blocks()[i]->getIndexX()]->position);
 	}
 	this->AddChild(_fallingBlock);
+	nextPieceIndex = (rand() % 7);
 }
 
 void Grid::rotateFallingPiece()
@@ -246,6 +296,7 @@ void Grid::update(float deltaTime)
 	fallFallingPiece();
 	removeFallingPiece();
 	checkGameOver();
+	LevelUp();
 }
 
 void Grid::fallFallingPiece()
@@ -300,6 +351,6 @@ void Grid::removeFallingPiece()
 		delete _fallingBlock;
 		_fallingBlock = nullptr;
 		_pieceLanded = false;
-		makeFallingPiece(rand()%7);
+		makeFallingPiece(nextPieceIndex);
 	}
 }

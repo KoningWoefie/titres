@@ -12,6 +12,7 @@ public:
 	Sprite(const std::string& imagepath);
 	Sprite(const std::string& imagepath, float uvHeight, float uvWidth);
 	virtual ~Sprite();
+	void ClearTextures();
 
 	GLuint getTexture() { return _texture; };
 	GLuint vertexbuffer() { return _vertexbuffer; };

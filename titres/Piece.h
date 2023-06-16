@@ -8,6 +8,7 @@ class Piece : public Entity
 { 
 public: 
     Piece(int i); 
+	Piece(glm::vec3 pos, int i);
     virtual ~Piece();
 
 	virtual void update(float deltaTime);

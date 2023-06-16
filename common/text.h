@@ -10,6 +10,8 @@ public:
 
 	virtual void update(float deltaTime);
 
+	void ClearMessage();
+
 	void Message(std::string m);
 
 private:

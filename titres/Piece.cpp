@@ -81,6 +81,38 @@ Piece::Piece(int i)
 	}
 }
 
+Piece::Piece(glm::vec3 pos, int i)
+{
+	_anchorBlock = nullptr;
+	rotationSortOf = 0;
+
+	switch (i)
+	{
+		case 0:
+			this->AddSprite("assets/O_PIECE.tga");
+			break;
+		case 1:
+			this->AddSprite("assets/I_PIECE.tga");
+			break;
+		case 2:
+			this->AddSprite("assets/L_PIECE.tga");
+			break;
+		case 3:
+			this->AddSprite("assets/J_PIECE.tga");
+			break;
+		case 4:
+			this->AddSprite("assets/T_PIECE.tga");
+			break;
+		case 5:
+			this->AddSprite("assets/Z_PIECE.tga");
+			break;
+		case 6:
+			this->AddSprite("assets/S_PIECE.tga");
+			break;
+	}
+	this->position = pos;
+}
+
 Piece::~Piece() 
 { 
 }

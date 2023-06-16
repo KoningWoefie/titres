@@ -32,8 +32,14 @@ public:
 
 	void clearGrid();
 
+	void LevelUp();
+
+	int GetPoints() { return _points; }
+	int GetNextIndex() { return nextPieceIndex; }
+
 private:
 	void moveBlock();
+	void GivePoints(int linesCleared);
 
 	Piece* _fallingBlock;
 	Timer* t;
@@ -43,6 +49,11 @@ private:
 
 	int _gridSizeX;
 	int _gridSizeY;
+
+	int _currentLevel;
+	int _currentLinesCleared;
+	int _points;
+	int nextPieceIndex;
 
 	float _fallTime;
 

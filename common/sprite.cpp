@@ -12,6 +12,7 @@
 
 Sprite::Sprite(const std::string& imagepath)
 {
+	spriteSheet = false;
 	// Transform
 	spritePosition = glm::vec2(0.0f, 0.0f);
 	spriteRotation = 0.0f;
@@ -34,6 +35,7 @@ Sprite::Sprite(const std::string& imagepath)
 
 Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
 {
+	spriteSheet = true;
 	// Transform
 	spritePosition = glm::vec2(0.0f, 0.0f);
 	spriteRotation = 0.0f;
@@ -59,6 +61,14 @@ Sprite::~Sprite()
 	// cleanup
 	glDeleteBuffers(1, &_vertexbuffer);
 	glDeleteBuffers(1, &_uvbuffer);
+	if (!spriteSheet)
+	{
+		glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
+	}
+}
+
+void Sprite::ClearTextures()
+{
 	glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
 }
 
