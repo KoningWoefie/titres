@@ -2,33 +2,30 @@
 Timer::Timer() 
 { 
 	_seconds = 0;
-	_start = false;
+	startSec = 0;
 } 
 Timer::~Timer() 
 { 
 }
 
-void Timer::update(float deltaTime)
-{
-	if (_start)
-	{
-		_seconds += deltaTime;
-	}
-}
-
 void Timer::StartTimer()
 {
-	_start = true;
-	_seconds = 0;
-}
-
-void Timer::TogglePause()
-{
-	_start = !_start;
+	startSec = _sec();
 }
 
 void Timer::StopTimer()
 {
-	_start = false;
 	_seconds = 0;
+	startSec = 0;
+}
+
+float Timer::Seconds()
+{
+	_seconds = _sec() - startSec;
+	return _seconds;
+}
+
+double Timer::_sec()
+{
+	return glfwGetTime();
 }

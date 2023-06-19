@@ -1,24 +1,23 @@
 #ifndef TIMER_H 
 #define TIMER_H 
 
-#include <common/entity.h>
+#include <GLFW/glfw3.h>
 
-class Timer : public Entity
+class Timer
 { 
 public: 
     Timer(); 
     virtual ~Timer();
 
-	virtual void update(float deltaTime);
-
 	void StartTimer();
-	void TogglePause();
 	void StopTimer();
 
-	float Seconds() { return _seconds; };
+	float Seconds();
 
 private:
+	double _sec();
+
 	float _seconds;
-	bool _start;
+	double startSec;
 }; 
 #endif // timer_H 
