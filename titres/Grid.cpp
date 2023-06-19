@@ -2,7 +2,7 @@
 #include "sstream"
 #include "fstream"
 
-Grid::Grid(int gridSizeX, int gridSizeY) 
+Grid::Grid(int gridSizeX, int gridSizeY, bool timeAttack) 
 {
 	_gridSizeX = gridSizeX - 1;
 	_gridSizeY = gridSizeY - 1;
@@ -10,18 +10,25 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 	_points = 0;
 	_currentLevel = 1;
 	_currentLinesCleared = 0;
+	requiredLines = 5;
 	nextPieceIndex = 0;
 
 	_fallTime = 0.6f;
 
 	_pieceLanded = false;
 	_gameOver = false;
+	_timeAttack = timeAttack;
 
 	t = new Timer();
 	inputDelay = new Timer();
-	t->TogglePause();
+	t->StartTimer();
 	inputDelay->StartTimer();
 	srand(time(NULL));
+	if (timeAttack)
+	{
+		timeAttackTimer = new Timer();
+		timeAttackTimer->StartTimer();
+	}
 
 	for (int y = 0; y < gridSizeY; y++)
 	{
@@ -39,8 +46,6 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		grid.push_back(row);
 		_fallenBlocks.push_back(emptyRow);
 	}
-	this->AddChild(t);
-	this->AddChild(inputDelay);
 
 	this->makeFallingPiece(rand()%7);
 }
@@ -79,7 +84,12 @@ void Grid::checkGameOver()
 		if (b->getOccupied())
 		{
 			_gameOver = true;
+			return;
 		}
+	}
+	if (timeAttackTimer->Seconds() >= 120)
+	{
+		_gameOver = true;
 	}
 }
 
@@ -146,9 +156,10 @@ void Grid::clearLine()
 
 void Grid::LevelUp()
 {
-	if (_currentLinesCleared >= _currentLinesCleared + (_currentLevel * 5))
+	if (_currentLinesCleared >= requiredLines)
 	{
 		_currentLevel++;
+		requiredLines += _currentLevel * 5;
 	}
 }
 
@@ -170,7 +181,20 @@ void Grid::clearGrid()
 			b->setOccupied(false);
 		}
 	}
+	if (_fallingBlock != nullptr)
+	{
+		timeAttackTimer->StopTimer();
+		this->RemoveChild(_fallingBlock);
+		delete _fallingBlock;
+		_fallingBlock = nullptr;
+		this->makeFallingPiece(rand() % 7);
+	}
+	_currentLevel = 1;
+	_currentLinesCleared = 0;
+	_points = 0;
 	_gameOver = false;
+
+	timeAttackTimer->StartTimer();
 }
 
 void Grid::moveBlock()

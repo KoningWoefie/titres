@@ -9,7 +9,7 @@
 class Grid : public Entity
 { 
 public: 
-    Grid(int gridSizeX, int gridSizeY);
+    Grid(int gridSizeX, int gridSizeY, bool timeAttack);
     virtual ~Grid();
 
 	virtual void update(float deltaTime);
@@ -39,6 +39,9 @@ public:
 	int GetLevel() { return _currentLevel; }
 	int GetLinesCleared() { return _currentLinesCleared; }
 
+	int GetTimeLeft() { if (timeAttackTimer->Seconds() >= 120) { return 0; } return 120 - timeAttackTimer->Seconds();
+	}
+
 private:
 	void moveBlock();
 	void GivePoints(int linesCleared);
@@ -46,11 +49,14 @@ private:
 	Piece* _fallingBlock;
 	Timer* t;
 	Timer* inputDelay;
+	Timer* timeAttackTimer;
 
 	std::vector<std::vector<Block*>> _fallenBlocks;
 
 	int _gridSizeX;
 	int _gridSizeY;
+
+	int requiredLines;
 
 	int _currentLevel;
 	int _currentLinesCleared;
@@ -61,5 +67,6 @@ private:
 
 	bool _pieceLanded;
 	bool _gameOver;
+	bool _timeAttack;
 }; 
 #endif // Grid_H 

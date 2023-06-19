@@ -27,6 +27,7 @@ private:
 	Text* type;
 	Text* next;
 	Text* linesCleared;
+	Text* timer;
 
 	int _nextIndex;
 };

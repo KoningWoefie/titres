@@ -2,7 +2,7 @@
 
 MyScene::MyScene() : Scene()
 {
-	grid = new Grid(10, 22);
+	grid = new Grid(10, 22, true);
 	grid->position = glm::vec3(484.0f, 164.0f, 0.0f);
 	background = new MyEntity();
 	background->scale = glm::vec3(4.0f, 4.0f, 1.0f);
@@ -17,9 +17,13 @@ MyScene::MyScene() : Scene()
 	type = new Text();
 	next = new Text();
 	linesCleared = new Text();
+	timer = new Text();
 
 	points->position = glm::vec3(902.5f, 625.0f, 0.0f);
 	points->scale = glm::vec3(0.5f, 0.5f, 1.0f);
+
+	timer->position = glm::vec3(885.0f, 525.0f, 0.0f);
+	timer->scale = glm::vec3(0.6f, 0.6f, 1.0f);
 
 	next->position = glm::vec3(902.5f, 180.0f, 0.0f);
 	next->scale = glm::vec3(0.5f, 0.5f, 1.0f);
@@ -42,6 +46,7 @@ MyScene::MyScene() : Scene()
 	this->AddChild(next);
 	this->AddChild(level);
 	this->AddChild(linesCleared);
+	this->AddChild(timer);
 }
 
 MyScene::~MyScene()
@@ -53,6 +58,7 @@ void MyScene::update(float deltaTime)
 	points->Message("Points:|" + std::to_string(grid->GetPoints()));
 	level->Message("Level|" + std::to_string(grid->GetLevel()));
 	linesCleared->Message("Lines: " + std::to_string(grid->GetLinesCleared()));
+	timer->Message(std::to_string(grid->GetTimeLeft()));
 	if (_nextIndex != grid->GetNextIndex())
 	{
 		_nextIndex = grid->GetNextIndex();
