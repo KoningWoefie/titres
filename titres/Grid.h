@@ -36,6 +36,8 @@ public:
 
 	int GetPoints() { return _points; }
 	int GetNextIndex() { return nextPieceIndex; }
+	int GetLevel() { return _currentLevel; }
+	int GetLinesCleared() { return _currentLinesCleared; }
 
 private:
 	void moveBlock();

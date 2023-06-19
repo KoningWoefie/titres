@@ -9,6 +9,7 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 
 	_points = 0;
 	_currentLevel = 1;
+	_currentLinesCleared = 0;
 	nextPieceIndex = 0;
 
 	_fallTime = 0.6f;
@@ -18,8 +19,6 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 
 	t = new Timer();
 	inputDelay = new Timer();
-	this->AddChild(t);
-	this->AddChild(inputDelay);
 	t->TogglePause();
 	inputDelay->StartTimer();
 	srand(time(NULL));
@@ -40,12 +39,37 @@ Grid::Grid(int gridSizeX, int gridSizeY)
 		grid.push_back(row);
 		_fallenBlocks.push_back(emptyRow);
 	}
+	this->AddChild(t);
+	this->AddChild(inputDelay);
 
 	this->makeFallingPiece(rand()%7);
 }
 
 Grid::~Grid() 
 {
+	//clear all falling blocks
+	clearGrid();
+	//delete everything with in the grid
+	for (int i = grid.size() - 1; i >= 0; i--)
+	{
+		for (int j = grid[i].size() - 1; j >= 0; j--)
+		{
+			delete grid[i][j];
+			grid[i][j] = nullptr;
+		}
+	}
+
+	//delete timers
+	delete t;
+	t = nullptr;
+	delete inputDelay;
+	inputDelay = nullptr;
+
+	if (_fallingBlock != nullptr)
+	{
+		delete _fallingBlock;
+		_fallingBlock = nullptr;
+	}
 }
 
 void Grid::checkGameOver()
@@ -88,7 +112,6 @@ void Grid::clearLine()
 			}
 			lineCleared = true;
 			linesCleared++;
-			_currentLinesCleared++;
 		}
 		else
 		{
@@ -103,6 +126,10 @@ void Grid::clearLine()
 			{
 				if (_fallenBlocks[i][j] != nullptr)
 				{
+					if (indices[i] == 0)
+					{
+						continue;
+					}
 					grid[i][j]->setOccupied(false);
 					_fallenBlocks[i][j]->setIndexY(_fallenBlocks[i][j]->getIndexY() + indices[i]);
 					grid[i + indices[i]][j]->setOccupied(true);
@@ -113,12 +140,13 @@ void Grid::clearLine()
 			}
 		}
 		GivePoints(linesCleared);
+		_currentLinesCleared += linesCleared;
 	}
 }
 
 void Grid::LevelUp()
 {
-	if (_currentLinesCleared >= _currentLevel * 5)
+	if (_currentLinesCleared >= _currentLinesCleared + (_currentLevel * 5))
 	{
 		_currentLevel++;
 	}
@@ -291,6 +319,10 @@ void Grid::update(float deltaTime)
 		}
 		return;
 	}
+	if (input()->getKeyDown(KEY_M))
+	{
+		std::cout << "break" << std::endl;
+	}
 	moveBlock();
 	rotateFallingPiece();
 	fallFallingPiece();
@@ -345,6 +377,7 @@ void Grid::removeFallingPiece()
 			_fallingBlock->RemoveChild(_fallingBlock->Blocks()[i]);
 		}
 
+		_fallingBlock->ClearBlocks();
 		clearLine();
 
 		this->RemoveChild(_fallingBlock);

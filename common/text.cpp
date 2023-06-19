@@ -32,7 +32,8 @@ void Text::Message(std::string m)
 {
 	ClearMessage();
 	_message = m;
-	std::cout << m << std::endl;
+	float yPos = 0.0f;
+	float xPos = 0.0f;
 	for (int i = 0; i < m.size(); i++)
 	{
 		float uvH = 1.0f / 8;
@@ -40,8 +41,18 @@ void Text::Message(std::string m)
 		Sprite* glyph = new Sprite("fonts/font.tga", uvH, uvW);
 
 		char c = m[i];
+		if (m[i] == 124)
+		{
+			yPos += 64;
+			xPos = 0;
+			continue;
+		}
 		glyph->spritePosition[0] -= (float)((m.size()/2)*32);
-		glyph->spritePosition[0] += i * 32;
+		xPos += 32;
+
+		glyph->spritePosition[0] += xPos;
+
+		glyph->spritePosition[1] = yPos;
 
 		int index = (int)c - 32;
 

@@ -1,10 +1,10 @@
 #include "game.h" 
 Game::Game() 
 {
-
+	running = true;
 } 
 Game::~Game() 
-{ 
+{
 }
 
 void Game::Run(Scene* scene)

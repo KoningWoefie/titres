@@ -18,13 +18,14 @@ public:
 	void rotateCW();
 	void rotateCCW();
 
+	void ClearBlocks() { _blocks.clear(); }
+
 private:
-	std::vector<Block*> _blocks;
-	Block* _anchorBlock;
 
 	void createPiece(int index);
 
 	std::vector<std::vector<std::vector<int>>> _positions;
+	std::vector<Block*> _blocks;
 
 	int rotationSortOf;
 }; 

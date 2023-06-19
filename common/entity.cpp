@@ -12,6 +12,16 @@ Entity::Entity()
 Entity::~Entity()
 {
 	parent = nullptr;
+	if (spriteSheet.size() > 0)
+	{
+		for (int i = spriteSheet.size() - 1; i >= 0; i--)
+		{
+			delete spriteSheet[i];
+			spriteSheet[i] = nullptr;
+		}
+	}
+	delete sprite;
+	sprite = nullptr;
 }
 
 void Entity::AddChild(Entity* e)
