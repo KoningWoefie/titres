@@ -7,6 +7,7 @@
 #include "Grid.h"
 #include "Piece.h"
 #include "MyEntity.h"
+#include "Button.h"
 
 class MyScene : public Scene
 {
@@ -18,17 +19,33 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	MyEntity* background;
-	Grid* grid;
-	Piece* displayPiece;
-	Timer* t;
-	Text* level;
-	Text* points;
-	Text* type;
-	Text* next;
-	Text* linesCleared;
-	Text* timer;
 
-	int _nextIndex;
+	void TimeAttack();
+	void Survival();
+
+	int CreateGrid(bool timeAttack);
+	int DeleteGrid();
+	int selectButton();
+
+	bool gridCreated;
+
+
+	MyEntity* background = nullptr;
+	Grid* grid = nullptr;
+	Piece* displayPiece = nullptr;
+	Timer* t = nullptr;
+	Text* level = nullptr;
+	Text* points = nullptr;
+	Text* type = nullptr;
+	Text* next = nullptr;
+	Text* linesCleared = nullptr;
+	Text* timer = nullptr;
+
+	Button* timeAttackButton;
+	Button* survivalButton;
+
+	std::vector<Button*> buttons;
+	int _nextIndex = 0;
+	int selectedIndex = 0;
 };
 #endif // !MYSCENE_H

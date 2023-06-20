@@ -77,20 +77,24 @@ Grid::~Grid()
 	}
 }
 
-void Grid::checkGameOver()
+bool Grid::checkGameOver()
 {
 	for (Block* b : grid[1])
 	{
 		if (b->getOccupied())
 		{
-			_gameOver = true;
-			return;
+			return true;
 		}
+	}
+	if (!_timeAttack)
+	{
+		return false;
 	}
 	if (timeAttackTimer->Seconds() >= 120)
 	{
-		_gameOver = true;
+		return true;
 	}
+	return false;
 }
 
 void Grid::clearLine()
@@ -183,7 +187,6 @@ void Grid::clearGrid()
 	}
 	if (_fallingBlock != nullptr)
 	{
-		timeAttackTimer->StopTimer();
 		this->RemoveChild(_fallingBlock);
 		delete _fallingBlock;
 		_fallingBlock = nullptr;
@@ -193,7 +196,9 @@ void Grid::clearGrid()
 	_currentLinesCleared = 0;
 	_points = 0;
 	_gameOver = false;
+	if (!_timeAttack) { return; }
 
+	timeAttackTimer->StopTimer();
 	timeAttackTimer->StartTimer();
 }
 
@@ -335,7 +340,7 @@ void Grid::rotateFallingPiece()
 
 void Grid::update(float deltaTime)
 {
-	if (_gameOver)
+	if (checkGameOver())
 	{
 		if (input()->getKeyDown(Enter))
 		{
@@ -351,7 +356,6 @@ void Grid::update(float deltaTime)
 	rotateFallingPiece();
 	fallFallingPiece();
 	removeFallingPiece();
-	checkGameOver();
 	LevelUp();
 }
 
@@ -410,4 +414,17 @@ void Grid::removeFallingPiece()
 		_pieceLanded = false;
 		makeFallingPiece(nextPieceIndex);
 	}
+}
+
+int Grid::GetTimeLeft()
+{
+	if (!_timeAttack)
+	{
+		return -1;
+	}
+	if (timeAttackTimer->Seconds() >= 120)
+	{ 
+		return 0; 
+	} 
+	return 120 - timeAttackTimer->Seconds();
 }

@@ -26,7 +26,7 @@ public:
 
 	void removeFallingPiece();
 
-	void checkGameOver();
+	bool checkGameOver();
 
 	void clearLine();
 
@@ -39,8 +39,7 @@ public:
 	int GetLevel() { return _currentLevel; }
 	int GetLinesCleared() { return _currentLinesCleared; }
 
-	int GetTimeLeft() { if (timeAttackTimer->Seconds() >= 120) { return 0; } return 120 - timeAttackTimer->Seconds();
-	}
+	int GetTimeLeft();
 
 private:
 	void moveBlock();
