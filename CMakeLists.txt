@@ -30,7 +30,7 @@ if(WIN32)
 	# Create a group for Visual Studio
 	SOURCE_GROUP(common REGULAR_EXPRESSION ".*/common/.*" )
 	# suppress pedantic warnings
-	add_definitions( "/W1 /D_CRT_SECURE_NO_WARNINGS /wd4514 /nologo" )
+	#add_definitions( "/W1 /D_CRT_SECURE_NO_WARNINGS /wd4514 /nologo" )
 endif(WIN32)
 
 add_definitions( # g++ -Dxxx

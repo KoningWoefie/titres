@@ -163,6 +163,7 @@ void Grid::LevelUp()
 	if (_currentLinesCleared >= requiredLines)
 	{
 		_currentLevel++;
+		_fallTime = _fallTime * 0.7f;
 		requiredLines += _currentLevel * 5;
 	}
 }
@@ -361,7 +362,7 @@ void Grid::update(float deltaTime)
 
 void Grid::fallFallingPiece()
 {
-	float fallTime = 0.6f;
+	float fallTime = _fallTime;
 	if (input()->getKey(Down))
 	{
 		fallTime = _fallTime / 16;

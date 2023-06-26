@@ -2,6 +2,7 @@
 
 MyScene::MyScene() : Scene()
 {
+	_nextIndex = 0;
 	gridCreated = false;
 	survivalButton = new Button();
 	survivalButton->position = glm::vec3(500.0f, 360.0f, 0.0f);
@@ -20,6 +21,21 @@ MyScene::MyScene() : Scene()
 
 	this->AddChild(survivalButton);
 	this->AddChild(timeAttackButton);
+
+
+	background = new MyEntity();
+	background->scale = glm::vec3(4.0f, 4.0f, 1.0f);
+	background->position = glm::vec3(640.0f, 480.0f, 0.0f);
+	t = new Timer();
+
+	displayPiece = new Piece(glm::vec3(902.5f, 240.0f, 0.0f), _nextIndex);
+
+	points = new Text();
+	level = new Text();
+	type = new Text();
+	next = new Text();
+	linesCleared = new Text();
+	timer = new Text();
 }
 
 MyScene::~MyScene()
@@ -73,20 +89,7 @@ int MyScene::CreateGrid(bool timeAttack)
 {
 	grid = new Grid(10, 22, timeAttack);
 	grid->position = glm::vec3(484.0f, 164.0f, 0.0f);
-	background = new MyEntity();
-	background->scale = glm::vec3(4.0f, 4.0f, 1.0f);
-	background->position = glm::vec3(640.0f, 480.0f, 0.0f);
-	t = new Timer();
 	_nextIndex = grid->GetNextIndex();
-	displayPiece = new Piece(glm::vec3(902.5f, 240.0f, 0.0f), _nextIndex);
-
-	//initialize all text
-	points = new Text();
-	level = new Text();
-	type = new Text();
-	next = new Text();
-	linesCleared = new Text();
-	timer = new Text();
 
 	points->position = glm::vec3(902.5f, 625.0f, 0.0f);
 	points->scale = glm::vec3(0.5f, 0.5f, 1.0f);
@@ -135,13 +138,13 @@ int MyScene::DeleteGrid()
 	delete grid;
 	grid = nullptr;
 
-	delete background;
+	/*delete background;
 	background = nullptr;
 
 	delete displayPiece;
 	displayPiece = nullptr;
 
-	delete points;
+	/*delete points;
 	points = nullptr;
 
 	delete next;
@@ -154,7 +157,7 @@ int MyScene::DeleteGrid()
 	linesCleared = nullptr;
 
 	delete timer;
-	timer = nullptr;
+	timer = nullptr;*/
 
 	delete t;
 	t = nullptr;
