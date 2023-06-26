@@ -41,6 +41,8 @@ private:
 	Text* linesCleared = nullptr;
 	Text* timer = nullptr;
 
+	Text* test = nullptr;
+
 	Button* timeAttackButton;
 	Button* survivalButton;
 

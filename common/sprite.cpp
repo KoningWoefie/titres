@@ -63,7 +63,8 @@ Sprite::~Sprite()
 	glDeleteBuffers(1, &_uvbuffer);
 	if (!spriteSheet)
 	{
-		glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
+		ClearTextures();
+		return;
 	}
 }
 
@@ -116,6 +117,7 @@ void Sprite::SetUpSize(float width, float height, GLuint texture)
 	spriteSize.y = height;
 
 	_texture = texture;
+	//std::cout << std::to_string(_texture) << std::endl;
 
 	if (!setup)
 	{
@@ -138,6 +140,7 @@ void Sprite::Index(int i)
 	_uvOffset[1] = yPos * _uv[1];
 
 	_index = i;
+	//std::cout << _index << std::endl;
 }
 
 GLuint Sprite::loadTGA(const std::string& imagepath)

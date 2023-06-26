@@ -40,9 +40,10 @@ void MyScene::update(float deltaTime)
 		DeleteGrid();
 		return;
 	}
-	points->Message("Points:|" + std::to_string(grid->GetPoints()));
-	level->Message("Level|" + std::to_string(grid->GetLevel()));
+	points->Message("Points:\n" + std::to_string(grid->GetPoints()));
+	level->Message("Level\n" + std::to_string(grid->GetLevel()));
 	linesCleared->Message("Lines: " + std::to_string(grid->GetLinesCleared()));
+
 	if (_nextIndex != grid->GetNextIndex())
 	{
 		_nextIndex = grid->GetNextIndex();

@@ -12,7 +12,7 @@ public:
 	ResourceManager();
 	virtual ~ResourceManager();
 
-	Sprite* GetTexture(const std::string& fileName);
+	Sprite* GetTexture(const std::string& fileName, bool spriteSheet = false, float uvH = 1.0f, float uvW = 1.0f);
 
 private:
 	std::map<std::string, Sprite*> _textures;

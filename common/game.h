@@ -29,8 +29,6 @@ private:
 
 	InputManager* _inMan = InputManager::input();
 	bool running;
-
-	int test;
 }; 
 
 #endif // game_H 

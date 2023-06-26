@@ -199,18 +199,17 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 {
 	for (int i = 0; i < spriteSheet.size(); i++)
 	{
+		//std::cout << std::to_string(spriteSheet[i]->getUVOffset()[0]) << " , " << std::to_string(spriteSheet[i]->getUVOffset()[1]) << std::endl;
 		// Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
-		Sprite* s = _resMan.GetTexture(spriteSheet[i]->TextureName());
-		spriteSheet[i]->SetUpSize(64, 64, s->getTexture());
-		s = nullptr;
-		glBindTexture(GL_TEXTURE_2D, spriteSheet[i]->getTexture()); //size
+		Sprite* s = _resMan.GetTexture(spriteSheet[i]->TextureName(), true, spriteSheet[i]->GetUV()[1], spriteSheet[i]->GetUV()[0]);
+		s->SetUpSize(64, 64, s->getTexture());
+		//s = nullptr;
+		glBindTexture(GL_TEXTURE_2D, s->getTexture()); //size
+		//std::cout << std::to_string(spriteSheet[i]->getTexture()) << std::endl;
 		// Set our "textureSampler" sampler to use Texture Unit 0
 		GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
 		glUniform1i(textureID, 0);
-
-		GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
-		glUniform2f(uvOffset, spriteSheet[i]->getUVOffset()[0], spriteSheet[i]->getUVOffset()[1]);
 
 		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(spriteSheet[i]->spritePosition[0], spriteSheet[i]->spritePosition[1], 0));
 		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, spriteSheet[i]->spriteRotation);
@@ -230,7 +229,7 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 		// 1st attribute buffer : vertices
 		GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
 		glEnableVertexAttribArray(vertexPositionID);
-		glBindBuffer(GL_ARRAY_BUFFER, spriteSheet[i]->vertexbuffer());
+		glBindBuffer(GL_ARRAY_BUFFER, s->vertexbuffer());
 		glVertexAttribPointer(
 			vertexPositionID, // The attribute we want to configure
 			3,          // size : x,y,z => 3
@@ -240,10 +239,11 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 			(void*)0    // array buffer offset
 		);
 
+		//std::cout << spriteSheet[i]->vertexbuffer() << std::endl;
 		// 2nd attribute buffer : UVs
 		GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
 		glEnableVertexAttribArray(vertexUVID);
-		glBindBuffer(GL_ARRAY_BUFFER, spriteSheet[i]->uvbuffer());
+		glBindBuffer(GL_ARRAY_BUFFER, s->uvbuffer());
 		glVertexAttribPointer(
 			vertexUVID, // The attribute we want to configure
 			2,          // size : U,V => 2
@@ -252,6 +252,10 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 			0,          // stride
 			(void*)0    // array buffer offset
 		);
+		//std::cout << spriteSheet[i]->uvbuffer() << std::endl;
+
+		GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
+		glUniform2f(uvOffset, spriteSheet[i]->getUVOffset()[0], spriteSheet[i]->getUVOffset()[1]);
 
 		// Draw the triangles
 		glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // 2*3 indices starting at 0 -> 2 triangles

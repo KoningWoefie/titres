@@ -17,6 +17,7 @@ public:
 	GLuint getTexture() { return _texture; };
 	GLuint vertexbuffer() { return _vertexbuffer; };
 	GLuint uvbuffer() { return _uvbuffer; };
+	glm::vec2 GetUV() { return _uv; }
 
 	unsigned int width() { return _width; };
 	unsigned int height() { return _height; };
