@@ -41,6 +41,10 @@ public:
 
 	int GetTimeLeft();
 
+	int calculateEndPoint();
+
+	int instaDrop();
+
 private:
 	void moveBlock();
 	void GivePoints(int linesCleared);
@@ -55,6 +59,8 @@ private:
 	int _gridSizeX;
 	int _gridSizeY;
 
+	int _endIndices[4];
+
 	int requiredLines;
 
 	int _currentLevel;
@@ -63,6 +69,7 @@ private:
 	int nextPieceIndex;
 
 	float _fallTime;
+	float _inputDelay;
 
 	bool _pieceLanded;
 	bool _gameOver;

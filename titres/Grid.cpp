@@ -14,6 +14,7 @@ Grid::Grid(int gridSizeX, int gridSizeY, bool timeAttack)
 	nextPieceIndex = 0;
 
 	_fallTime = 0.6f;
+	_inputDelay = 0.2f;
 
 	_pieceLanded = false;
 	_gameOver = false;
@@ -206,7 +207,7 @@ void Grid::clearGrid()
 void Grid::moveBlock()
 {
 	int indices[4] = {-1,-1,-1,-1};
-	if (input()->getKeyDown(Left) || (input()->getKey(Left) && inputDelay->Seconds() >= 0.2f ))
+	if (input()->getKeyDown(Left) || (input()->getKey(Left) && inputDelay->Seconds() >= _inputDelay ))
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -219,8 +220,9 @@ void Grid::moveBlock()
 			indexX--;
 			indices[i] = indexX;
 		}
+		if (_inputDelay > 0.07f) { _inputDelay -= 0.02f; }
 	}
-	if (input()->getKeyDown(Right) || (input()->getKey(Right) && inputDelay->Seconds() >= 0.2f))
+	if (input()->getKeyDown(Right) || (input()->getKey(Right) && inputDelay->Seconds() >= _inputDelay))
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -233,7 +235,9 @@ void Grid::moveBlock()
 			indexX++;
 			indices[i] = indexX;
 		}
+		if (_inputDelay > 0.7f) { _inputDelay -= 0.02f; }
 	}
+	if (!input()->getKey(Right) && !input()->getKey(Left)) { _inputDelay = 0.2f; }
 	if (indices[0] != -1)
 	{
 		for (int i = 0; i < 4; i++)
@@ -242,6 +246,7 @@ void Grid::moveBlock()
 			_fallingBlock->Blocks()[i]->setIndexX(indices[i]);
 			inputDelay->StartTimer();
 		}
+		calculateEndPoint();
 	}
 }
 
@@ -283,6 +288,7 @@ void Grid::makeFallingPiece(int i)
 	}
 	this->AddChild(_fallingBlock);
 	nextPieceIndex = (rand() % 7);
+	calculateEndPoint();
 }
 
 void Grid::rotateFallingPiece()
@@ -337,6 +343,7 @@ void Grid::rotateFallingPiece()
 			}
 		}
 	}
+	calculateEndPoint();
 }
 
 void Grid::update(float deltaTime)
@@ -358,6 +365,7 @@ void Grid::update(float deltaTime)
 	fallFallingPiece();
 	removeFallingPiece();
 	LevelUp();
+	instaDrop();
 }
 
 void Grid::fallFallingPiece()
@@ -428,4 +436,45 @@ int Grid::GetTimeLeft()
 		return 0; 
 	} 
 	return 120 - timeAttackTimer->Seconds();
+}
+
+int Grid::calculateEndPoint()
+{
+	bool reachedEndPoint = false;
+	int j = 1;
+	int endIndices[4] = {-1,-1,-1,-1};
+	while (!reachedEndPoint)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			int indexY = _fallingBlock->Blocks()[i]->getIndexY();
+			int indexX = _fallingBlock->Blocks()[i]->getIndexX();
+			if ((indexY + j) == (_gridSizeY + 1) || grid[indexY + j][indexX]->getOccupied())
+			{
+				reachedEndPoint = true;
+				return 1;
+			}
+			endIndices[i] = indexY + j;
+		}
+		_endIndices[0] = endIndices[0];
+		_endIndices[1] = endIndices[1];
+		_endIndices[2] = endIndices[2];
+		_endIndices[3] = endIndices[3];
+		j++;
+	}
+	return -1;
+}
+
+int Grid::instaDrop()
+{
+	if (input()->getKeyDown(Up))
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			_fallingBlock->Blocks()[i]->updatePos(grid[_endIndices[i]][_fallingBlock->Blocks()[i]->getIndexX()]->position);
+			_fallingBlock->Blocks()[i]->setIndexY(_endIndices[i]);
+		}
+		_pieceLanded = true;
+	}
+	return 1;
 }
