@@ -59,13 +59,13 @@ Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
 Sprite::~Sprite()
 {
 	// cleanup
-	glDeleteBuffers(1, &_vertexbuffer);
+	/*glDeleteBuffers(1, &_vertexbuffer);
 	glDeleteBuffers(1, &_uvbuffer);
 	if (!spriteSheet)
 	{
 		ClearTextures();
 		return;
-	}
+	}*/
 }
 
 void Sprite::ClearTextures()

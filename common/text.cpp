@@ -41,7 +41,6 @@ void Text::Message(std::string m)
 		float uvH = 1.0f / 8;
 		float uvW = 1.0f / 16;
 		Sprite* glyph = new Sprite("fonts/font.tga", uvH, uvW);
-		glyph->SetUpSize(64, 64, glyph->getTexture());
 
 		char c = m[i];
 		if (m[i] == 10)

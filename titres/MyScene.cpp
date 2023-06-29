@@ -91,7 +91,7 @@ int MyScene::CreateGrid(bool timeAttack)
 	grid->position = glm::vec3(484.0f, 164.0f, 0.0f);
 	_nextIndex = grid->GetNextIndex();
 
-	points->position = glm::vec3(902.5f, 625.0f, 0.0f);
+	points->position = glm::vec3(925.5f, 625.0f, 0.0f);
 	points->scale = glm::vec3(0.5f, 0.5f, 1.0f);
 
 	timer->position = glm::vec3(885.0f, 525.0f, 0.0f);
