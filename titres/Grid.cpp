@@ -49,6 +49,8 @@ Grid::Grid(int gridSizeX, int gridSizeY, bool timeAttack)
 	}
 
 	this->makeFallingPiece(rand()%7);
+	_HighScore = GetHighScoreTXT();
+	std::cout << std::to_string(_HighScore) << std::endl;
 }
 
 Grid::~Grid() 
@@ -476,5 +478,84 @@ int Grid::instaDrop()
 		}
 		_pieceLanded = true;
 	}
+	return 1;
+}
+
+int Grid::GetHighScoreTXT()
+{
+	std::string highscore = "";
+	std::string temphighscore = "";
+	std::fstream file("score/highscore.txt");
+	if (!file.is_open())
+	{
+		std::cout << "can't open file" << std::endl;
+		return -1;
+	}
+	while (std::getline(file, temphighscore))
+	{
+		if (_timeAttack)
+		{
+			if (temphighscore[0] == 116)
+			{
+				temphighscore.erase(temphighscore.begin());
+				highscore = temphighscore;
+				break;
+			}
+		}
+		else
+		{
+			if (temphighscore[0] == 115)
+			{
+				temphighscore.erase(temphighscore.begin());
+				highscore = temphighscore;
+				break;
+			}
+		}
+	}
+	file.close();
+	_highScore = highscore;
+	return std::stoi(highscore);
+}
+
+int Grid::CheckHighScore()
+{
+	int highScore = std::stoi(_highScore);
+	if (_points < highScore)
+	{
+		return 0;
+	}
+	std::ifstream fileR("score/highscore.txt");
+	std::ofstream fileW("score/highscore.txt");
+	std::string temp = "";
+	std::string line1 = "";
+	std::string line2 = "";
+	if (!fileR.is_open() || !fileW.is_open())
+	{
+		std::cout << "can't open file" << std::endl;
+		return -1;
+	}
+	while (std::getline(fileR,temp))
+	{
+		if (temp[0] == 115)
+		{
+			line1 = temp;
+		}
+		if (temp[0] == 116)
+		{
+			line2 = temp;
+		}
+	}
+	fileR.close();
+	if (_timeAttack)
+	{
+		line2 = "t" + std::to_string(_points);
+	}
+	else
+	{
+		line1 = "s" + std::to_string(_points);
+	}
+	fileW << line1 << "\n";
+	fileW << line2 << "\n";
+	fileW.close();
 	return 1;
 }

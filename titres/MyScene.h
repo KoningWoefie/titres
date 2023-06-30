@@ -31,6 +31,7 @@ private:
 
 
 	MyEntity* background = nullptr;
+	MyEntity* controls = nullptr;
 	Grid* grid = nullptr;
 	Piece* displayPiece = nullptr;
 	Timer* t = nullptr;

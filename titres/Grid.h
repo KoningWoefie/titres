@@ -1,6 +1,7 @@
 #ifndef GRID_H 
 #define GRID_H 
 
+#include <fstream>
 #include <common/entity.h>
 #include <common/timer.h>
 #include "Block.h"
@@ -45,9 +46,12 @@ public:
 
 	int instaDrop();
 
+	int GetHighScore() { return _HighScore; };
+	int CheckHighScore();
 private:
 	void moveBlock();
 	void GivePoints(int linesCleared);
+	int GetHighScoreTXT();
 
 	Piece* _fallingBlock;
 	Timer* t;
@@ -74,5 +78,8 @@ private:
 	bool _pieceLanded;
 	bool _gameOver;
 	bool _timeAttack;
+
+	std::string _highScore;
+	int _HighScore;
 }; 
 #endif // Grid_H 

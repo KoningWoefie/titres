@@ -5,23 +5,27 @@ MyScene::MyScene() : Scene()
 	_nextIndex = 0;
 	gridCreated = false;
 	survivalButton = new Button();
-	survivalButton->position = glm::vec3(500.0f, 360.0f, 0.0f);
+	survivalButton->position = glm::vec3(500.0f, 700.0f, 0.0f);
 	survivalButton->SetButtonText("Survival");
 	survivalButton->SetCallbackFunction(std::bind(&MyScene::Survival, this));
 	survivalButton->Select(true);
 
 	timeAttackButton = new Button();
-	timeAttackButton->position = glm::vec3(800.0f, 360.0f, 0.0f);
+	timeAttackButton->position = glm::vec3(800.0f, 700.0f, 0.0f);
 	timeAttackButton->SetButtonText("Time Attack");
 	timeAttackButton->SetCallbackFunction(std::bind(&MyScene::TimeAttack, this));
 	timeAttackButton->Select(false);
+
+	controls = new MyEntity();
+	controls->AddSprite("assets/controls.tga");
+	controls->position = glm::vec3(640.0f, 200.0f, 0.0f);
 
 	buttons.push_back(survivalButton);
 	buttons.push_back(timeAttackButton);
 
 	this->AddChild(survivalButton);
 	this->AddChild(timeAttackButton);
-
+	this->AddChild(controls);
 
 	background = new MyEntity();
 	background->scale = glm::vec3(4.0f, 4.0f, 1.0f);
@@ -56,7 +60,7 @@ void MyScene::update(float deltaTime)
 		DeleteGrid();
 		return;
 	}
-	points->Message("Points:\n" + std::to_string(grid->GetPoints()));
+	points->Message("Points:\n" + std::to_string(grid->GetPoints()) + "\n" + "HighScore:\n" + std::to_string(grid->GetHighScore()));
 	level->Message("Level\n" + std::to_string(grid->GetLevel()));
 	linesCleared->Message("Lines: " + std::to_string(grid->GetLinesCleared()));
 
@@ -91,7 +95,7 @@ int MyScene::CreateGrid(bool timeAttack)
 	grid->position = glm::vec3(484.0f, 164.0f, 0.0f);
 	_nextIndex = grid->GetNextIndex();
 
-	points->position = glm::vec3(925.5f, 625.0f, 0.0f);
+	points->position = glm::vec3(1030.5f, 625.0f, 0.0f);
 	points->scale = glm::vec3(0.5f, 0.5f, 1.0f);
 
 	timer->position = glm::vec3(885.0f, 525.0f, 0.0f);
@@ -126,6 +130,7 @@ int MyScene::CreateGrid(bool timeAttack)
 
 int MyScene::DeleteGrid()
 {
+	grid->CheckHighScore();
 	this->RemoveChild(grid);
 	this->RemoveChild(background);
 	this->RemoveChild(displayPiece);
