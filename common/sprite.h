@@ -6,6 +6,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 class Sprite
 {
 public:

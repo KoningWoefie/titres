@@ -3,6 +3,8 @@
 
 #include <GLFW/glfw3.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 class Timer
 { 
 public: 

@@ -1,5 +1,7 @@
 #include "inputmanager.h" 
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 InputManager::InputManager() 
 {
 	_window = nullptr;

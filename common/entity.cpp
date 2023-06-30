@@ -1,5 +1,7 @@
 #include <common/entity.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 Entity::Entity()
 {
 	parent = nullptr;

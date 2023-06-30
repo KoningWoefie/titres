@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 ResourceManager::ResourceManager()
 {
 	std::cout << "Creating ResourceManager" << std::endl;

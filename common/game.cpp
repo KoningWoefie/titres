@@ -1,4 +1,7 @@
 #include "game.h" 
+
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 Game::Game() 
 {
 	running = true;

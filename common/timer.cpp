@@ -1,4 +1,7 @@
 #include "timer.h" 
+
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 Timer::Timer() 
 { 
 	_seconds = 0;

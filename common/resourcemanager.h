@@ -6,6 +6,8 @@
 #include <common/sprite.h>
 #include <GL/glew.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 class ResourceManager
 {
 public:

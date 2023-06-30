@@ -9,6 +9,8 @@
 #include <common/sprite.h>
 #include <common/resourcemanager.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 class Renderer
 {
 public:

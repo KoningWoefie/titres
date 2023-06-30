@@ -13,6 +13,8 @@
 #include <common/inputmanager.h>
 #include <common/sh2dconfig.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 class Entity
 {
 public:

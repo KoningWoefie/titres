@@ -10,6 +10,8 @@
 
 #include <common/sprite.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 Sprite::Sprite(const std::string& imagepath)
 {
 	spriteSheet = false;

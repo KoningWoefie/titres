@@ -2,6 +2,9 @@
 #define TEXT_H 
 
 #include <common/entity.h>
+
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 class Text : public Entity
 { 
 public: 

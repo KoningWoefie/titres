@@ -14,6 +14,8 @@
 #include <common/camera.h>
 #include <common/renderer.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 Renderer::Renderer()
 {
 	// We get the camera from the scene later

@@ -1,6 +1,8 @@
 #include <common/config.h>
 #include <common/camera.h>
 
+//Copyright 2023 Sander Hoving (Fuck you Gideon)
+
 Camera::Camera()
 {
 	_projectionMatrix = glm::ortho(0.0f, (float)WIDTH, (float)HEIGHT, 0.0f, 0.1f, 100.0f);
