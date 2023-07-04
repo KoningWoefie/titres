@@ -3,7 +3,7 @@
 
 #include <common/scene.h>
 
-#include "Battler.h"
+#include "Trainer.h"
 
 class BattleScene : public Scene
 { 
@@ -14,7 +14,7 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	Battler* bat1;
-	Battler* bat2;
+	Trainer* bat1;
+	Trainer* bat2;
 }; 
 #endif // BattleScene_H 

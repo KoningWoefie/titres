@@ -1,5 +1,5 @@
 #include "Battler.h" 
-Battler::Battler(std::string name, int health, int attack, int defense, int speed)
+Battler::Battler(std::string name, int health, int attack, int defense, int speed) : Entity()
 {
 	_name = name;
 
