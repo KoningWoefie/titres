@@ -2,8 +2,8 @@
 
 BattleScene::BattleScene() : Scene()
 {
-	bat1 = new Battler("barry");
-	bat2 = new Battler("jeffrey");
+	bat1 = new Battler("barry", 300, 100, 60, 35);
+	bat2 = new Battler("jeffrey", 200, 300, 35, 60);
 
 	srand(time(NULL));
 } 

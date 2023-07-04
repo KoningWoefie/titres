@@ -6,7 +6,7 @@
 class Battler : public Entity
 { 
 public: 
-    Battler(std::string name); 
+    Battler(std::string name, int health,int attack, int defense, int speed); 
     virtual ~Battler();
 
 	virtual void update(float deltaTime);

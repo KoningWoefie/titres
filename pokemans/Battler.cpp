@@ -1,12 +1,12 @@
 #include "Battler.h" 
-Battler::Battler(std::string name) 
+Battler::Battler(std::string name, int health, int attack, int defense, int speed)
 {
-	_health = 100;
-	_attack = 200;
-	_defense = 30;
-	_speed = 50;
-
 	_name = name;
+
+	_health = health;
+	_attack = attack;
+	_defense = defense;
+	_speed = speed;
 } 
 Battler::~Battler() 
 { 
