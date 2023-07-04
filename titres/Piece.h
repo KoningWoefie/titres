@@ -24,7 +24,10 @@ private:
 
 	void createPiece(int index);
 
-	std::vector<std::vector<std::vector<int>>> _positions;
+	typedef std::vector<int> indices;
+	typedef std::vector<indices> blocks;
+
+	std::vector<blocks> _positions;
 	std::vector<Block*> _blocks;
 
 	int rotationSortOf;
