@@ -17,11 +17,13 @@ public:
 
 	std::string GetName() { return _name; }
 	int GetHealth() { return _health; }
+	int GetSpeed() { return _speed; }
+
 private:
 	int _health;
 	int _attack;
-	//int _defense;
-	//int _speed;
+	int _defense;
+	int _speed;
 	//int _specialAttack;
 	//int _specialDefense;
 
