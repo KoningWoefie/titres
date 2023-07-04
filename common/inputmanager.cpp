@@ -53,6 +53,12 @@ void InputManager::registerKey(int key, GLFWwindow* w)
 			_keysDown[key] = false;
 		}
 	}
+	else
+	{
+		_keys[key] = false;
+		_keysDown[key] = false;
+		_keysUp[key] = false;
+	}
 	if (glfwGetKey(w, key) == GLFW_RELEASE)
 	{
 		if (_keys[key] == true)
