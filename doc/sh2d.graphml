@@ -200,7 +200,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#800000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -232,7 +232,7 @@
           </y:Path>
           <y:LineStyle color="#800000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -242,7 +242,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#800000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -266,7 +266,7 @@
           </y:Path>
           <y:LineStyle color="#800000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -288,7 +288,7 @@
           </y:Path>
           <y:LineStyle color="#0000FF" type="line" width="1.0"/>
           <y:Arrows source="diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -300,7 +300,7 @@
           </y:Path>
           <y:LineStyle color="#0000FF" type="line" width="1.0"/>
           <y:Arrows source="diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -323,7 +323,7 @@
           </y:Path>
           <y:LineStyle color="#800000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
-          <y:BendStyle smoothed="false"/>
+          <y:BendStyle smoothed="true"/>
         </y:PolyLineEdge>
       </data>
     </edge>
@@ -338,7 +338,6 @@
       </data>
     </edge>
     <edge id="e13" source="n11" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-37.85999999999967" sy="-3.4880000000004827" tx="-37.85999999999967" ty="-13.958000000000482"/>
