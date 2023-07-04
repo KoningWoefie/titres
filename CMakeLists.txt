@@ -110,11 +110,24 @@ add_executable(titres # g++ titres/demo.cpp -o titres
 	titres/Button.cpp
 	titres/Button.h
 )
+
+add_executable(pokemans # g++ pokemans/main.cpp -o pokemans
+	pokemans/main.cpp
+	pokemans/BattleScene.cpp
+	pokemans/BattleScene.h
+	pokemans/Battler.cpp
+	pokemans/Battler.h
+)
 target_link_libraries(demo # g++ -lcommon
 	common
 	${ALL_GRAPHICS_LIBS}
 )
 target_link_libraries(titres #g++ -lcommon
+	common
+	${ALL_GRAPHICS_LIBS}
+)
+
+target_link_libraries(pokemans #g++ -lcommon
 	common
 	${ALL_GRAPHICS_LIBS}
 )
