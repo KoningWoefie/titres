@@ -4,7 +4,7 @@
 #include <common/scene.h>
 
 #include "Trainer.h"
-#include "Button.h"
+#include "HUD.h"
 
 class BattleScene : public Scene
 { 
@@ -19,5 +19,6 @@ private:
 	int ChoosePokeman(int index, Trainer* t);
 	Trainer* player;
 	Trainer* jeffrey;
+	HUD* hud;
 }; 
 #endif // BattleScene_H 

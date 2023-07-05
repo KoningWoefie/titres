@@ -121,6 +121,8 @@ add_executable(pokemans # g++ pokemans/main.cpp -o pokemans
 	pokemans/Trainer.h
 	pokemans/Button.cpp
 	pokemans/Button.h
+	pokemans/HUD.cpp
+	pokemans/HUD.h
 )
 target_link_libraries(demo # g++ -lcommon
 	common
