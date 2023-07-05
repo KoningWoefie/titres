@@ -11,7 +11,12 @@ BattleScene::BattleScene() : Scene()
 
 	srand(time(NULL));
 	this->AddChild(hud);
-} 
+
+	_selectedIndexX = 0;
+	_selectedIndexY = 0;
+	_selectedMenu = 0;
+	hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(true);
+}
 BattleScene::~BattleScene() 
 {
 	delete player;
@@ -30,14 +35,17 @@ void BattleScene::update(float deltaTime)
 	{
 		ChoosePokeman(0, player);
 	}
-	if (input()->getKeyDown(KEY_Z))
+	if (hud->IsFighting())
 	{
-		ChoosePokeman(1, player);
+		_selectedMenu = 1;
+		hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(true);
 	}
-	if (input()->getKeyDown(KEY_X))
+	else
 	{
-		Battle();
+		_selectedMenu = 0;
+		hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(true);
 	}
+	selectButton();
 }
 
 int BattleScene::Battle()
@@ -87,4 +95,51 @@ int BattleScene::ChoosePokeman(int index, Trainer* t)
 {
 	t->SetActiveBattler(index);
 	return 0;
+}
+
+int BattleScene::selectButton()
+{
+	int indexX = _selectedIndexX;
+	int indexY = _selectedIndexY;
+	if (input()->getKeyDown(Right))
+	{
+		indexX++;
+		if (indexX >= hud->GetInteractableButtons()[_selectedIndexY].size())
+		{
+			return 0;
+		}
+	}
+	if (input()->getKeyDown(Left))
+	{
+		indexX--;
+		if (indexX < 0)
+		{
+			return 0;
+		}
+	}
+	if (input()->getKeyDown(Up))
+	{
+		indexY--;
+		if (indexY < 0)
+		{
+			return 0;
+		}
+	}
+	if (input()->getKeyDown(Down))
+	{
+		indexY++;
+		if (indexY >= hud->GetInteractableButtons().size())
+		{
+			return 0;
+		}
+	}
+	if (indexX == _selectedIndexX && indexY == _selectedIndexY)
+	{
+		return 0;
+	}
+	hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(false);
+	hud->GetInteractableButtons()[_selectedMenu][indexY][indexX]->Select(true);
+	_selectedIndexX = indexX;
+	_selectedIndexY = indexY;
+	return 1;
 }

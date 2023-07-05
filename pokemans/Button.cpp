@@ -6,7 +6,7 @@ Button::Button()
 	buttonText->scale = glm::vec3(0.6f, 0.6f, 1.0f);
 	_selected = false;
 
-	this->AddSprite("assets/button.tga");
+	this->AddSprite("assets/StandardButton.tga");
 	this->AddChild(buttonText);
 } 
 Button::~Button() 

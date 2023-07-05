@@ -17,6 +17,12 @@ public:
 private:
 	int Battle();
 	int ChoosePokeman(int index, Trainer* t);
+
+	int selectButton();
+
+	int _selectedIndexX;
+	int _selectedIndexY;
+	int _selectedMenu;
 	Trainer* player;
 	Trainer* jeffrey;
 	HUD* hud;
