@@ -15,6 +15,8 @@ public:
 
 	int SetActiveBattler(int index);
 
+	Battler* GetActiveBattler() { return activeBattler; }
+
 private:
 	std::vector<Battler*> party;
 	Battler* activeBattler;

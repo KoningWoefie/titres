@@ -14,7 +14,9 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	Trainer* bat1;
-	Trainer* bat2;
+	int Battle();
+	int ChoosePokeman(int index, Trainer* t);
+	Trainer* player;
+	Trainer* jeffrey;
 }; 
 #endif // BattleScene_H 

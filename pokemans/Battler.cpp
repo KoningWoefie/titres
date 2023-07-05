@@ -19,9 +19,9 @@ void Battler::update(float deltaTime)
 
 int Battler::Attack(Battler* enemy)
 {
-	std::cout << "attacking: " << enemy->GetName() << std::endl;
+	std::cout << _name << " is now attacking: " << enemy->GetName() << std::endl;
 	enemy->TakeDamage(_attack);
-	std::cout << "health of enemy now: " << enemy->GetHealth() << std::endl;
+	std::cout << "health of " << enemy->GetName() << " is now: " << enemy->GetHealth() << std::endl;
 	return 1;
 }
 

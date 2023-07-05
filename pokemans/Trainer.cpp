@@ -2,10 +2,11 @@
 Trainer::Trainer(std::string name, int health, int attack, int defense, int speed) : Battler(name, health, attack, defense, speed)
 {
 	activeBattler = this;
+	party.push_back(this);
 } 
 Trainer::~Trainer() 
 {
-	for (int i = 0; i < party.size(); i++)
+	for (int i = 1; i < party.size(); i++)
 	{
 		delete  party[i];
 		party[i] = nullptr;
@@ -26,6 +27,7 @@ int Trainer::SetActiveBattler(int index)
 {
 	if (index < 0 || index >= party.size())
 	{
+		std::cout << "Party is not that big moron" << std::endl;
 		return 0;
 	}
 	activeBattler = party[index];
