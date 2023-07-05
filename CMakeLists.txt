@@ -119,6 +119,8 @@ add_executable(pokemans # g++ pokemans/main.cpp -o pokemans
 	pokemans/Battler.h
 	pokemans/Trainer.cpp
 	pokemans/Trainer.h
+	pokemans/Button.cpp
+	pokemans/Button.h
 )
 target_link_libraries(demo # g++ -lcommon
 	common
@@ -136,7 +138,7 @@ target_link_libraries(pokemans #g++ -lcommon
 # Copy assets and shaders to the build directory
 # (In Visual Studio, copy these directories to either 'Release' or 'Build')
 file(
-	COPY titres/assets
+	COPY pokemans/assets
 	DESTINATION ${CMAKE_BINARY_DIR}
 )
 file(
