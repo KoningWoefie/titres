@@ -65,6 +65,7 @@ HUD::HUD() : Entity()
 	this->AddChild(textBar);
 	_fightMenu = false;
 }
+
 HUD::~HUD()
 {
 }
@@ -75,6 +76,7 @@ void HUD::update(float deltaTime)
 
 int HUD::ShowFightMenu()
 {
+	std::cout << "showing fight menu" << std::endl;
 	this->RemoveChild(fight);
 	this->RemoveChild(bag);
 	this->RemoveChild(pokeman);
@@ -100,5 +102,22 @@ int HUD::ShowMenu()
 	this->AddChild(pokeman);
 	this->AddChild(run);
 	_fightMenu = false;
+	return 1;
+}
+
+int HUD::SetMoves(std::vector<std::function<void()>> callbackfunctions)
+{
+	if (callbackfunctions.size() > 4)
+	{
+		std::cout << "you can only have four moves" << std::endl;
+		return 0;
+	}
+	else
+	{
+		for (int i = 0; i < callbackfunctions.size(); i++)
+		{
+			interactableFightButtons[i/2][i % 2]->SetCallbackFunction(callbackfunctions[i]);
+		}
+	}
 	return 1;
 }

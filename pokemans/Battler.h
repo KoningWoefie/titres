@@ -2,6 +2,7 @@
 #define BATTLER_H
 
 #include <common/entity.h>
+#include <functional>
 
 class Battler : public Entity
 { 
@@ -19,6 +20,11 @@ public:
 	int GetHealth() { return _health; }
 	int GetSpeed() { return _speed; }
 
+	int LearnMove(std::function<void()> move);
+	//int ForgetMove(); //to do
+
+	std::vector<std::function<void()>> GetMoves() { return moves; }
+
 private:
 	int _health;
 	int _attack;
@@ -28,5 +34,6 @@ private:
 	//int _specialDefense;
 
 	std::string _name;
+	std::vector<std::function<void()>> moves;
 }; 
 #endif // Battler_H 

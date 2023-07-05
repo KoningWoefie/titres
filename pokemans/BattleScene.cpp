@@ -5,9 +5,15 @@ BattleScene::BattleScene() : Scene()
 	player = new Trainer("player", 300, 150, 60, 35);
 	jeffrey = new Trainer("jeffrey", 200, 300, 35, 60);
 
-	hud = new HUD();
+	player->LearnMove(std::bind(&BattleScene::Battle, this));
+	player->LearnMove(std::bind(&BattleScene::Battle, this));
+	player->LearnMove(std::bind(&BattleScene::Battle, this));
+	player->LearnMove(std::bind(&BattleScene::Battle, this));
 
-	player->AddBattler(new Battler("dumbass", 500, 300, 10, 10));
+	hud = new HUD();
+	hud->SetMoves(player->GetMoves());
+
+	//player->AddBattler(new Battler("dumbass", 500, 300, 10, 10));
 
 	srand(time(NULL));
 	this->AddChild(hud);
@@ -17,6 +23,7 @@ BattleScene::BattleScene() : Scene()
 	_selectedMenu = 0;
 	hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(true);
 }
+
 BattleScene::~BattleScene() 
 {
 	delete player;

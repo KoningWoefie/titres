@@ -36,3 +36,9 @@ int Battler::TakeDamage(int damage)
 	}
 	return 1;
 }
+
+int Battler::LearnMove(std::function<void()> move)
+{
+	moves.push_back(move);
+	return 1;
+}

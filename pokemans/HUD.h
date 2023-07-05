@@ -19,6 +19,8 @@ public:
 
 	bool IsFighting() { return _fightMenu; }
 
+	int SetMoves(std::vector<std::function<void()>> callbackfunctions);
+
 	int ShowMenu();
 private:
 	int ShowFightMenu();
