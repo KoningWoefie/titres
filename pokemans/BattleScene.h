@@ -3,8 +3,9 @@
 
 #include <common/scene.h>
 
-#include "Trainer.h"
-#include "HUD.h"
+#include "pokemans/Trainer.h"
+#include "pokemans/HUD.h"
+#include "pokemans/MoveList.h"
 
 class BattleScene : public Scene
 { 
@@ -15,7 +16,7 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	int Battle();
+	void Battle();
 	int ChoosePokeman(int index, Trainer* t);
 
 	int selectButton();

@@ -4,6 +4,9 @@
 #include <common/entity.h>
 #include <functional>
 
+#include "pokemans/Move.h"
+#include "pokemans/MoveList.h"
+
 class Battler : public Entity
 { 
 public: 
@@ -20,11 +23,13 @@ public:
 	int GetHealth() { return _health; }
 	int GetSpeed() { return _speed; }
 
-	int LearnMove(std::function<void()> move);
+	int LearnMove(int index);
 	//int ForgetMove(); //to do
 
 	std::vector<std::function<void()>> GetMoves() { return moves; }
+	std::vector<Move*> getMoves() { return _moves; }
 
+	void SetActiveMove(int index) { _activeMove = index; }
 private:
 	int _health;
 	int _attack;
@@ -35,5 +40,11 @@ private:
 
 	std::string _name;
 	std::vector<std::function<void()>> moves;
+
+	std::vector<Move*> _moves;
+
+	int _activeMove;
+
+	MoveList* moveList = MoveList::moveList();
 }; 
 #endif // Battler_H 

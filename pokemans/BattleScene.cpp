@@ -5,13 +5,15 @@ BattleScene::BattleScene() : Scene()
 	player = new Trainer("player", 300, 150, 60, 35);
 	jeffrey = new Trainer("jeffrey", 200, 300, 35, 60);
 
-	player->LearnMove(std::bind(&BattleScene::Battle, this));
-	player->LearnMove(std::bind(&BattleScene::Battle, this));
-	player->LearnMove(std::bind(&BattleScene::Battle, this));
-	player->LearnMove(std::bind(&BattleScene::Battle, this));
+	player->LearnMove((int)Moves::Kick);
+	player->LearnMove((int)Moves::BodySlam);
+	player->LearnMove((int)Moves::Tackle);
+	player->LearnMove((int)Moves::Punch);
+
+	jeffrey->LearnMove((int)Moves::Punch);
 
 	hud = new HUD();
-	hud->SetMoves(player->GetMoves());
+	hud->SetMoves(std::bind(&BattleScene::Battle, this));
 
 	//player->AddBattler(new Battler("dumbass", 500, 300, 10, 10));
 
@@ -55,7 +57,7 @@ void BattleScene::update(float deltaTime)
 	selectButton();
 }
 
-int BattleScene::Battle()
+void BattleScene::Battle()
 {
 	Battler* activeBat1 = player->GetActiveBattler();
 	Battler* activeBat2 = jeffrey->GetActiveBattler();
@@ -95,7 +97,6 @@ int BattleScene::Battle()
 			activeBat1->Attack(activeBat2);
 		}
 	}
-	return 0;
 }
 
 int BattleScene::ChoosePokeman(int index, Trainer* t)
@@ -146,6 +147,7 @@ int BattleScene::selectButton()
 	}
 	hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(false);
 	hud->GetInteractableButtons()[_selectedMenu][indexY][indexX]->Select(true);
+	player->SetActiveMove(indexY*2+indexX);
 	_selectedIndexX = indexX;
 	_selectedIndexY = indexY;
 	return 1;

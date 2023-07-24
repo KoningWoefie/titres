@@ -7,6 +7,8 @@ Battler::Battler(std::string name, int health, int attack, int defense, int spee
 	_attack = attack;
 	_defense = defense;
 	_speed = speed;
+
+	_activeMove = 0;
 } 
 Battler::~Battler() 
 { 
@@ -19,8 +21,8 @@ void Battler::update(float deltaTime)
 
 int Battler::Attack(Battler* enemy)
 {
-	std::cout << _name << " is now attacking: " << enemy->GetName() << std::endl;
-	enemy->TakeDamage(_attack);
+	std::cout << _name << " is now attacking: " << enemy->GetName() << "with the move " << _moves[_activeMove]->GetName() << std::endl;
+	enemy->TakeDamage((_moves[_activeMove]->GetPower()*_attack)/20);
 	std::cout << "health of " << enemy->GetName() << " is now: " << enemy->GetHealth() << std::endl;
 	return 1;
 }
@@ -37,8 +39,8 @@ int Battler::TakeDamage(int damage)
 	return 1;
 }
 
-int Battler::LearnMove(std::function<void()> move)
+int Battler::LearnMove(int index)
 {
-	moves.push_back(move);
+	_moves.push_back(moveList->GetMove(index));
 	return 1;
 }

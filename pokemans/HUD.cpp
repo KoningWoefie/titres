@@ -105,19 +105,11 @@ int HUD::ShowMenu()
 	return 1;
 }
 
-int HUD::SetMoves(std::vector<std::function<void()>> callbackfunctions)
+int HUD::SetMoves(std::function<void()> callbackfunction)
 {
-	if (callbackfunctions.size() > 4)
-	{
-		std::cout << "you can only have four moves" << std::endl;
-		return 0;
-	}
-	else
-	{
-		for (int i = 0; i < callbackfunctions.size(); i++)
-		{
-			interactableFightButtons[i/2][i % 2]->SetCallbackFunction(callbackfunctions[i]);
-		}
-	}
+	move1->SetCallbackFunction(callbackfunction);
+	move2->SetCallbackFunction(callbackfunction);
+	move3->SetCallbackFunction(callbackfunction);
+	move4->SetCallbackFunction(callbackfunction);
 	return 1;
 }
