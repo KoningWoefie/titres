@@ -85,6 +85,8 @@ add_library(common # ar rcs libcommon.a
 	common/timer.h
 	common/text.cpp
 	common/text.h
+	common/character.cpp
+	common/character.h
 )
 
 # Demo
