@@ -21,9 +21,9 @@ if(UNIX)
 
 	# For leak-checking and profiling, add '-pg' to CXX flags
 	# set(CMAKE_CXX_FLAGS "-Wall -pg -std=c++11 -O2")
-	# valgrind --leak-check=full ./demo
-	# ./demo # creates cmon.out
-	# gprof demo gmon.out > analysis.txt
+	# valgrind --leak-check=full ./pokemans
+	# ./pokemans # creates cmon.out
+	# gprof pokemans gmon.out > analysis.txt
 endif(UNIX)
 
 if(WIN32)
@@ -90,11 +90,11 @@ add_library(common # ar rcs libcommon.a
 )
 
 # Demo
-add_executable(demo # g++ demo/demo.cpp -o demo
-	demo/demo.cpp
-	demo/MyScene.cpp
-	demo/MyScene.h
-)
+#add_executable(demo # g++ demo/demo.cpp -o demo
+#	demo/demo.cpp
+#	demo/MyScene.cpp
+#	demo/MyScene.h
+#)
 
 #Titres
 add_executable(titres # g++ titres/demo.cpp -o titres
@@ -129,11 +129,13 @@ add_executable(pokemans # g++ pokemans/main.cpp -o pokemans
 	pokemans/Move.h
 	pokemans/MoveList.cpp
 	pokemans/MoveList.h
+	pokemans/Player.cpp
+	pokemans/Player.h
 )
-target_link_libraries(demo # g++ -lcommon
-	common
-	${ALL_GRAPHICS_LIBS}
-)
+#target_link_libraries(demo # g++ -lcommon
+#	common
+#	${ALL_GRAPHICS_LIBS}
+#)
 target_link_libraries(titres #g++ -lcommon
 	common
 	${ALL_GRAPHICS_LIBS}

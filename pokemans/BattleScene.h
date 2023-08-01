@@ -6,6 +6,7 @@
 #include "pokemans/Trainer.h"
 #include "pokemans/HUD.h"
 #include "pokemans/MoveList.h"
+#include "pokemans/Player.h"
 
 class BattleScene : public Scene
 { 

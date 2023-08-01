@@ -5,6 +5,9 @@ BattleScene::BattleScene() : Scene()
 	player = new Trainer("player", 300, 150, 60, 35);
 	jeffrey = new Trainer("jeffrey", 200, 300, 35, 60);
 
+	Player* owP = new Player(0.1f, 4, 4, "assets/Sprite_Sheet_G4.tga");
+	owP->position = glm::vec3(400.0f, 300.0f, 0.0f);;
+
 	player->LearnMove((int)Moves::Kick);
 	player->LearnMove((int)Moves::BodySlam);
 	player->LearnMove((int)Moves::Tackle);
@@ -19,9 +22,9 @@ BattleScene::BattleScene() : Scene()
 
 	srand(time(NULL));
 	this->AddChild(hud);
+	this->AddChild(owP);
 
 	_selectedIndexX = 0;
-	_selectedIndexY = 0;
 	_selectedMenu = 0;
 	hud->GetInteractableButtons()[_selectedMenu][_selectedIndexY][_selectedIndexX]->Select(true);
 }

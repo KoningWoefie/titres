@@ -6,7 +6,7 @@
 class Character : public Entity
 { 
 public: 
-    Character(int animSpeed, int spriteAmountW, int spriteAmountH, std::string fileName); 
+    Character(float animSpeed, int spriteAmountW, int spriteAmountH, std::string fileName); 
     virtual ~Character();
 
 	virtual void update(float deltaTime);
@@ -14,6 +14,9 @@ public:
 	int Frame(int index);
 
 	void clearLastFrame();
+
+	void setAnimation(std::vector<int> anim) {	animations.push_back(anim);	};
+
 private:
 
 	int _currentFrame;
@@ -25,5 +28,8 @@ private:
 	int _spriteAmountH;
 
 	std::string _fileName;
+
+	typedef std::vector<int> animation;
+	std::vector<animation> animations;
 }; 
 #endif // character_H 
