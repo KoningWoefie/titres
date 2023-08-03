@@ -11,6 +11,8 @@ public:
 
     virtual void update(float deltaTime);
 private:
+    bool playAnim;
+    int _selectedAnimation;
 };
 
 #endif

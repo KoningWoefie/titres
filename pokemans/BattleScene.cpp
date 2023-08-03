@@ -5,7 +5,7 @@ BattleScene::BattleScene() : Scene()
 	player = new Trainer("player", 300, 150, 60, 35);
 	jeffrey = new Trainer("jeffrey", 200, 300, 35, 60);
 
-	Player* owP = new Player(0.1f, 4, 4, "assets/Sprite_Sheet_G4.tga");
+	Player* owP = new Player(0.18f, 4, 4, "assets/Sprite_Sheet_G4.tga");
 	owP->position = glm::vec3(400.0f, 300.0f, 0.0f);;
 
 	player->LearnMove((int)Moves::Kick);

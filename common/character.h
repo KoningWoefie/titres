@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include "common/entity.h"
+#include <common/timer.h>
 
 class Character : public Entity
 { 
@@ -17,17 +18,22 @@ public:
 
 	void setAnimation(std::vector<int> anim) {	animations.push_back(anim);	};
 
+	int PlayAnimation(int index);
+
 private:
+	float _animationSpeed;
 
 	int _currentFrame;
-
-	int _animationSpeed;
 	//how many sprites are in the width of the spritesheet
 	int _spriteAmountW;
 	//how many sprites are in the height of the spritesheet
 	int _spriteAmountH;
 
 	std::string _fileName;
+
+	Timer* _timer;
+	
+	int _frame;
 
 	typedef std::vector<int> animation;
 	std::vector<animation> animations;
