@@ -40,7 +40,7 @@ void Text::Message(std::string m)
 	{
 		float uvH = 1.0f / 8;
 		float uvW = 1.0f / 16;
-		Sprite* glyph = new Sprite("fonts/font.tga", uvH, uvW);
+		Sprite* glyph = new Sprite("fonts/Ponderosa_Font.tga", uvH, uvW);
 
 		char c = m[i];
 		if (m[i] == 10)

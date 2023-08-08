@@ -18,11 +18,16 @@ BattleScene::BattleScene() : Scene()
 	hud = new HUD();
 	hud->SetMoves(std::bind(&BattleScene::Battle, this));
 
+	Text* t = new Text();
+	t->Message("FIGHT");
+	t->position = glm::vec3(400.0f, 300.0f, 0.0f);
+
 	//player->AddBattler(new Battler("dumbass", 500, 300, 10, 10));
 
 	srand(time(NULL));
 	this->AddChild(hud);
 	this->AddChild(owP);
+	this->AddChild(t);
 
 	_selectedIndexX = 0;
 	_selectedMenu = 0;
