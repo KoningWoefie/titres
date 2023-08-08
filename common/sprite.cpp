@@ -32,6 +32,8 @@ Sprite::Sprite(const std::string& imagepath)
 	_textureName = imagepath;
 	setup = false;
 
+	color = glm::vec3(255, 255, 255);
+
 	SetUpUV(1,1);
 }
 
@@ -54,6 +56,8 @@ Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
 
 	_textureName = imagepath;
 	setup = false;
+
+	color = glm::vec3(255, 255, 255);
 
 	SetUpUV(uvHeight, uvWidth);
 }

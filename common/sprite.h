@@ -31,6 +31,8 @@ public:
 	glm::vec2 spriteScale;
 	glm::vec2 spriteSize;
 
+	glm::vec3 color;
+
 	std::string TextureName() { return _textureName; };
 
 	GLuint loadTGA(const std::string& imagepath);

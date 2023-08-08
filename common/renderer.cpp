@@ -163,6 +163,9 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 	GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
 	glUniform2f(uvOffset, sprite->getUVOffset()[0], sprite->getUVOffset()[1]);
 
+	GLuint colorID = glGetUniformLocation(_programID, "blendColor");
+	glUniform4f(colorID, sprite->color.r/255, sprite->color.g/255, sprite->color.b/255, 1.0f);
+
 	// 1st attribute buffer : vertices
 	GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
 	glEnableVertexAttribArray(vertexPositionID);
@@ -258,6 +261,9 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 
 		GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
 		glUniform2f(uvOffset, spriteSheet[i]->getUVOffset()[0], spriteSheet[i]->getUVOffset()[1]);
+
+		GLuint colorID = glGetUniformLocation(_programID, "blendColor");
+		glUniform4f(colorID, spriteSheet[i]->color.r/255, spriteSheet[i]->color.g/255, spriteSheet[i]->color.b/255, 1.0f);
 
 		// Draw the triangles
 		glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // 2*3 indices starting at 0 -> 2 triangles
