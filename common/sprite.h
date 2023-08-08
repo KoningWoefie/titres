@@ -30,6 +30,7 @@ public:
 	float spriteRotation;
 	glm::vec2 spriteScale;
 	glm::vec2 spriteSize;
+	glm::vec2 pivot;
 
 	glm::vec3 color;
 

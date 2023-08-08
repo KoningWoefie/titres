@@ -34,6 +34,8 @@ Sprite::Sprite(const std::string& imagepath)
 
 	color = glm::vec3(255, 255, 255);
 
+	pivot = glm::vec2(0.0f, 0.0f);
+
 	SetUpUV(1,1);
 }
 
@@ -58,6 +60,8 @@ Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
 	setup = false;
 
 	color = glm::vec3(255, 255, 255);
+
+	pivot = glm::vec2(0.5f, 0.5f);
 
 	SetUpUV(uvHeight, uvWidth);
 }
@@ -84,13 +88,13 @@ void Sprite::createBuffer(std::vector<glm::vec2> uv)
 	// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 	// A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
 	GLfloat g_vertex_buffer_data[18] = {
-		 0.5f * spriteSize.x, -0.5f * spriteSize.y, 0.0f,
-		-0.5f * spriteSize.x, -0.5f * spriteSize.y, 0.0f,
-		-0.5f * spriteSize.x,  0.5f * spriteSize.y, 0.0f,
+		 spriteSize.x - (pivot.x * spriteSize.x), -pivot.y * spriteSize.y, 0.0f,
+		-pivot.x * spriteSize.x, -pivot.y * spriteSize.y, 0.0f,
+		-pivot.x * spriteSize.x,  spriteSize.y - (pivot.y * spriteSize.y), 0.0f,
 		
-		-0.5f * spriteSize.x,  0.5f * spriteSize.y, 0.0f,
-		 0.5f * spriteSize.x,  0.5f * spriteSize.y, 0.0f,
-		 0.5f * spriteSize.x, -0.5f * spriteSize.y, 0.0f
+		-pivot.x * spriteSize.x,  spriteSize.y - (pivot.y * spriteSize.y), 0.0f,
+		 spriteSize.x - (pivot.x * spriteSize.x),  spriteSize.y - (pivot.y * spriteSize.y), 0.0f,
+		 spriteSize.x - (pivot.x * spriteSize.x), -pivot.y * spriteSize.y, 0.0f
 	};
 
 	// Send vertices to GPU
