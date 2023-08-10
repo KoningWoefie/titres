@@ -34,7 +34,7 @@ Sprite::Sprite(const std::string& imagepath)
 
 	color = glm::vec3(255, 255, 255);
 
-	pivot = glm::vec2(0.0f, 0.0f);
+	pivot = glm::vec2(0.5f, 0.5f);
 
 	SetUpUV(1,1);
 }
@@ -123,6 +123,8 @@ void Sprite::SetUpUV(float uvHeight, float uvWidth)
 
 void Sprite::SetUpSize(float width, float height, GLuint texture)
 {
+	_width = width;
+	_height = height;
 	spriteSize.x = width;
 	spriteSize.y = height;
 

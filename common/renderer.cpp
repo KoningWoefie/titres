@@ -156,6 +156,7 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 	glActiveTexture(GL_TEXTURE0);
 	sprite = _resMan.GetTexture(sprite->TextureName());
 	glBindTexture(GL_TEXTURE_2D, sprite->getTexture());
+	Mesh* mesh = _resMan.GetMesh(sprite->width(), sprite->height(), sprite->GetUV().x, sprite->GetUV().y, sprite->pivot);
 	// Set our "textureSampler" sampler to use Texture Unit 0
 	GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
 	glUniform1i(textureID, 0);
@@ -169,7 +170,7 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 	// 1st attribute buffer : vertices
 	GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
 	glEnableVertexAttribArray(vertexPositionID);
-	glBindBuffer(GL_ARRAY_BUFFER, sprite->vertexbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
 	glVertexAttribPointer(
 		vertexPositionID, // The attribute we want to configure
 		3,          // size : x,y,z => 3
@@ -182,7 +183,7 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 	// 2nd attribute buffer : UVs
 	GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
 	glEnableVertexAttribArray(vertexUVID);
-	glBindBuffer(GL_ARRAY_BUFFER, sprite->uvbuffer());
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
 	glVertexAttribPointer(
 		vertexUVID, // The attribute we want to configure
 		2,          // size : U,V => 2
@@ -211,6 +212,8 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 		s->SetUpSize(64, 64, s->getTexture());
 		//s = nullptr;
 		glBindTexture(GL_TEXTURE_2D, s->getTexture()); //size
+
+		Mesh* mesh = _resMan.GetMesh(s->width(), s->height(), s->GetUV().x, s->GetUV().y, s->pivot);
 		//std::cout << std::to_string(spriteSheet[i]->getTexture()) << std::endl;
 		// Set our "textureSampler" sampler to use Texture Unit 0
 		GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
@@ -234,7 +237,7 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 		// 1st attribute buffer : vertices
 		GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
 		glEnableVertexAttribArray(vertexPositionID);
-		glBindBuffer(GL_ARRAY_BUFFER, s->vertexbuffer());
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
 		glVertexAttribPointer(
 			vertexPositionID, // The attribute we want to configure
 			3,          // size : x,y,z => 3
@@ -248,7 +251,7 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 		// 2nd attribute buffer : UVs
 		GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
 		glEnableVertexAttribArray(vertexUVID);
-		glBindBuffer(GL_ARRAY_BUFFER, s->uvbuffer());
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
 		glVertexAttribPointer(
 			vertexUVID, // The attribute we want to configure
 			2,          // size : U,V => 2

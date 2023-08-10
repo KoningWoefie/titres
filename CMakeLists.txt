@@ -87,6 +87,8 @@ add_library(common # ar rcs libcommon.a
 	common/text.h
 	common/character.cpp
 	common/character.h
+	common/mesh.cpp
+	common/mesh.h
 )
 
 # Demo
