@@ -9,7 +9,7 @@
 class Mesh
 {
 public:
-    Mesh(float width, float height, float uvWidth, float uvHeight, glm::vec2 pivot);
+    Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot);
     ~Mesh();
 
     int changeUV(float uvWidth, float uvHeight);

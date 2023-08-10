@@ -1,6 +1,6 @@
 #include <common/mesh.h>
 
-Mesh::Mesh(float width, float height, float uvWidth, float uvHeight, glm::vec2 pivot)
+Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot)
 {
 	std::vector<glm::vec3> vertices;
 
