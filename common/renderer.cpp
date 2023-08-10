@@ -131,13 +131,19 @@ void Renderer::renderEntity(Entity* entity, glm::mat4 PaMa)
 
 	if (entity->ESprite() != nullptr)
 	{
-		this->renderSprite(entity->ESprite(), PaMa);
+		if(entity->ESprite()->Meshes().size() > 0)
+		{
+			this->renderNineSlices(entity->ESprite(), PaMa);
+		}
+		else
+		{
+			this->renderSprite(entity->ESprite(), PaMa);
+		}
 	}
 	else if (entity->GetSpriteSheet().size() > 0)
 	{
 		this->renderSpriteSheet(entity->GetSpriteSheet(), PaMa);
 	}
-
 	for (int i = 0; i < entity->Children().size(); i++)
 	{
 		renderEntity(entity->Children()[i], PaMa);
@@ -167,38 +173,7 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 	GLuint colorID = glGetUniformLocation(_programID, "blendColor");
 	glUniform4f(colorID, sprite->color.r/255, sprite->color.g/255, sprite->color.b/255, 1.0f);
 
-	// 1st attribute buffer : vertices
-	GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
-	glEnableVertexAttribArray(vertexPositionID);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
-	glVertexAttribPointer(
-		vertexPositionID, // The attribute we want to configure
-		3,          // size : x,y,z => 3
-		GL_FLOAT,   // type
-		GL_FALSE,   // normalized?
-		0,          // stride
-		(void*)0    // array buffer offset
-	);
-
-	// 2nd attribute buffer : UVs
-	GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
-	glEnableVertexAttribArray(vertexUVID);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
-	glVertexAttribPointer(
-		vertexUVID, // The attribute we want to configure
-		2,          // size : U,V => 2
-		GL_FLOAT,   // type
-		GL_FALSE,   // normalized?
-		0,          // stride
-		(void*)0    // array buffer offset
-	);
-
-	// Draw the triangles
-	glDrawArrays(GL_TRIANGLES, 0, 2*3); // 2*3 indices starting at 0 -> 2 triangles
-
-	// cleanup
-	glDisableVertexAttribArray(vertexPositionID);
-	glDisableVertexAttribArray(vertexUVID);
+	renderMesh(mesh, MVP);
 }
 
 void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
@@ -214,10 +189,13 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 		glBindTexture(GL_TEXTURE_2D, s->getTexture()); //size
 
 		Mesh* mesh = _resMan.GetMesh(s->width(), s->height(), s->GetUV().x, s->GetUV().y, s->pivot);
-		//std::cout << std::to_string(spriteSheet[i]->getTexture()) << std::endl;
+
 		// Set our "textureSampler" sampler to use Texture Unit 0
 		GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
 		glUniform1i(textureID, 0);
+
+		GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
+		glUniform2f(uvOffset, spriteSheet[i]->getUVOffset()[0], spriteSheet[i]->getUVOffset()[1]);
 
 		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(spriteSheet[i]->spritePosition[0], spriteSheet[i]->spritePosition[1], 0));
 		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, spriteSheet[i]->spriteRotation);
@@ -230,51 +208,56 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 		mdm *= modelMatrix;
 
 		glm::mat4 MVP = _projectionMatrix * _viewMatrix * mdm;
-		// Send our transformation to the currently bound shader, in the "MVP" uniform
-		GLuint matrixID = glGetUniformLocation(_programID, "MVP");
-		glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);
-
-		// 1st attribute buffer : vertices
-		GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
-		glEnableVertexAttribArray(vertexPositionID);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexbuffer());
-		glVertexAttribPointer(
-			vertexPositionID, // The attribute we want to configure
-			3,          // size : x,y,z => 3
-			GL_FLOAT,   // type
-			GL_FALSE,   // normalized?
-			0,          // stride
-			(void*)0    // array buffer offset
-		);
-
-		//std::cout << spriteSheet[i]->vertexbuffer() << std::endl;
-		// 2nd attribute buffer : UVs
-		GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
-		glEnableVertexAttribArray(vertexUVID);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->uvbuffer());
-		glVertexAttribPointer(
-			vertexUVID, // The attribute we want to configure
-			2,          // size : U,V => 2
-			GL_FLOAT,   // type
-			GL_FALSE,   // normalized?
-			0,          // stride
-			(void*)0    // array buffer offset
-		);
-		//std::cout << spriteSheet[i]->uvbuffer() << std::endl;
-
-		GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
-		glUniform2f(uvOffset, spriteSheet[i]->getUVOffset()[0], spriteSheet[i]->getUVOffset()[1]);
 
 		GLuint colorID = glGetUniformLocation(_programID, "blendColor");
 		glUniform4f(colorID, spriteSheet[i]->color.r/255, spriteSheet[i]->color.g/255, spriteSheet[i]->color.b/255, 1.0f);
-
-		// Draw the triangles
-		glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // 2*3 indices starting at 0 -> 2 triangles
-
-		// cleanup
-		glDisableVertexAttribArray(vertexPositionID);
-		glDisableVertexAttribArray(vertexUVID);
+		
+		this->renderMesh(mesh, MVP);
 	}
+}
+
+void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm)
+{
+
+}
+
+void Renderer::renderMesh(Mesh* m, glm::mat4 mm)
+{
+	GLuint matrixID = glGetUniformLocation(_programID, "MVP");
+	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mm[0][0]);
+
+	// 1st attribute buffer : vertices
+	GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");
+	glEnableVertexAttribArray(vertexPositionID);
+	glBindBuffer(GL_ARRAY_BUFFER, m->vertexbuffer());
+	glVertexAttribPointer(
+		vertexPositionID, // The attribute we want to configure
+		3,          // size : x,y,z => 3
+		GL_FLOAT,   // type
+		GL_FALSE,   // normalized?
+		0,          // stride
+		(void*)0    // array buffer offset
+	);
+
+	// 2nd attribute buffer : UVs
+	GLuint vertexUVID = glGetAttribLocation(_programID, "vertexUV");
+	glEnableVertexAttribArray(vertexUVID);
+	glBindBuffer(GL_ARRAY_BUFFER, m->uvbuffer());
+	glVertexAttribPointer(
+		vertexUVID, // The attribute we want to configure
+		2,          // size : U,V => 2
+		GL_FLOAT,   // type
+		GL_FALSE,   // normalized?
+		0,          // stride
+		(void*)0    // array buffer offset
+	);
+
+	// Draw the triangles
+	glDrawArrays(GL_TRIANGLES, 0, 2*3); // 2*3 indices starting at 0 -> 2 triangles
+
+	// cleanup
+	glDisableVertexAttribArray(vertexPositionID);
+	glDisableVertexAttribArray(vertexUVID);
 }
 
 GLuint Renderer::loadShaders(const std::string& vertex_file_path, const std::string& fragment_file_path)

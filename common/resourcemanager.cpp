@@ -37,7 +37,7 @@ Sprite* ResourceManager::GetTexture(const std::string& fileName, bool spriteShee
 Mesh* ResourceManager::GetMesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot)
 {
 	char temp[64];
-	sprintf(temp, "%d_%d_%.*f_%.*f_%df_%df", width, height, uvWidth, uvHeight, pivot.x, pivot.y);
+	sprintf(temp, "%d_%d_%.5f_%.5f_%df_%df", width, height, uvWidth, uvHeight, pivot.x, pivot.y);
 
 	std::string meshName(temp);
 
@@ -46,5 +46,6 @@ Mesh* ResourceManager::GetMesh(int width, int height, float uvWidth, float uvHei
 		return _meshes[meshName];
 	}
 	_meshes[meshName] = new Mesh(width, height, uvWidth, uvHeight, pivot);
+	std::cout << uvWidth << ", " << uvHeight << std::endl;
 	return _meshes[meshName];
 }

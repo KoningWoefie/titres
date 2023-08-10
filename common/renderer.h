@@ -21,6 +21,8 @@ public:
 	void renderEntity(Entity* entity, glm::mat4 PaMa);
 	void renderSprite(Sprite* sprite, glm::mat4 mm);
 	void renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm);
+	void renderNineSlices(Sprite* sprite, glm::mat4 mm);
+	void renderMesh(Mesh* m, glm::mat4 mm);
 	GLFWwindow* window() { return _window; };
 
 	float updateDeltaTime();

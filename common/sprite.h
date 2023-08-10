@@ -40,6 +40,8 @@ public:
 
 	std::string TextureName() { return _textureName; };
 
+	std::vector<Mesh*> Meshes() {	return meshes;	};
+
 	GLuint loadTGA(const std::string& imagepath);
 	void createBuffer(std::vector<glm::vec2> uv);
 	void SetUpUV(float uvHeight, float uvWidth);
