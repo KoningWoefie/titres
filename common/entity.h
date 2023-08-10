@@ -31,6 +31,7 @@ public:
 
 	void AddSprite(const std::string& fileName);
 	void AddSpriteSheet(const std::string& fileName, float uvHeight, float uvWidth);
+	void AddNineSliceSprite(const std::string& fileName, int width, int height, int t, int b, int l, int r);
 	std::vector<Sprite*> GetSpriteSheet() { return spriteSheet; }
 
 	std::vector<Entity*> Children() { return children; };

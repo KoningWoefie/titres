@@ -63,3 +63,13 @@ void Entity::AddSpriteSheet(const std::string& fileName, float uvHeight, float u
 	}
 	sprite = new Sprite(fileName, uvHeight, uvWidth);
 }
+
+void Entity::AddNineSliceSprite(const std::string& fileName, int width, int height, int t, int b, int l, int r)
+{
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+	sprite = new Sprite(fileName, width, height, t, b, l, r);
+}
