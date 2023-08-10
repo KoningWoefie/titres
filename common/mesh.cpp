@@ -24,6 +24,17 @@ Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot
     generateBuffers(vertices, _uvs);
 }
 
+Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot, glm::vec2 uvOffset, bool corner)
+{
+    _width = width;
+    _height = height;
+    _uvWidth = uvWidth;
+    _uvHeight = uvHeight;
+    _pivot = pivot;
+    _corner = corner;
+    _uvOffset = uvOffset;
+}
+
 Mesh::~Mesh()
 {
     glDeleteBuffers(1, &_vertexbuffer);
