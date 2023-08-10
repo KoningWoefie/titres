@@ -68,14 +68,6 @@ Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
 
 Sprite::~Sprite()
 {
-	// cleanup
-	/*glDeleteBuffers(1, &_vertexbuffer);
-	glDeleteBuffers(1, &_uvbuffer);
-	if (!spriteSheet)
-	{
-		ClearTextures();
-		return;
-	}*/
 }
 
 void Sprite::ClearTextures()
@@ -83,41 +75,8 @@ void Sprite::ClearTextures()
 	glDeleteTextures(1, &_texture); // texture created in loadTGA() with glGenTextures()
 }
 
-void Sprite::createBuffer(std::vector<glm::vec2> uv)
-{
-	// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-	// A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
-	GLfloat g_vertex_buffer_data[18] = {
-		 spriteSize.x - (pivot.x * spriteSize.x), -pivot.y * spriteSize.y, 0.0f,
-		-pivot.x * spriteSize.x, -pivot.y * spriteSize.y, 0.0f,
-		-pivot.x * spriteSize.x,  spriteSize.y - (pivot.y * spriteSize.y), 0.0f,
-		
-		-pivot.x * spriteSize.x,  spriteSize.y - (pivot.y * spriteSize.y), 0.0f,
-		 spriteSize.x - (pivot.x * spriteSize.x),  spriteSize.y - (pivot.y * spriteSize.y), 0.0f,
-		 spriteSize.x - (pivot.x * spriteSize.x), -pivot.y * spriteSize.y, 0.0f
-	};
-
-	// Send vertices to GPU
-	glGenBuffers(1, &_vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-	// Send UV's to GPU
-	glGenBuffers(1, &_uvbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, _uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, uv.size() * sizeof(glm::vec2), &uv[0], GL_STATIC_DRAW);
-}
-
 void Sprite::SetUpUV(float uvHeight, float uvWidth)
 {
-	_uvs.push_back(glm::vec2(uvWidth, uvHeight));
-	_uvs.push_back(glm::vec2(0.0f, uvHeight));
-	_uvs.push_back(glm::vec2(0.0f, 0.0f));
-
-	_uvs.push_back(glm::vec2(0.0f, 0.0f));
-	_uvs.push_back(glm::vec2(uvWidth, 0.0f));
-	_uvs.push_back(glm::vec2(uvWidth, uvHeight));
-
 	_uv = glm::vec2(uvWidth, uvHeight);
 }
 
@@ -129,13 +88,6 @@ void Sprite::SetUpSize(float width, float height, GLuint texture)
 	spriteSize.y = height;
 
 	_texture = texture;
-	//std::cout << std::to_string(_texture) << std::endl;
-
-	if (!setup)
-	{
-		createBuffer(_uvs);
-	}
-	setup = true;
 }
 
 void Sprite::Index(int i)
@@ -287,7 +239,7 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 	spriteSize.x = _width;
 	spriteSize.y = _height;
 
-	createBuffer(_uvs);
+	// createBuffer(_uvs);
 
 	// Return the ID of the texture we just created
 	_texture = textureID;
