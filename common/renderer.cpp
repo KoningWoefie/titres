@@ -133,7 +133,7 @@ void Renderer::renderEntity(Entity* entity, glm::mat4 PaMa)
 	{
 		if(entity->ESprite()->Meshes().size() > 0)
 		{
-			this->renderNineSlices(entity->ESprite(), PaMa);
+			this->renderNineSlices(entity->ESprite(), PaMa, entity->scale.x, entity->scale.y);
 		}
 		else
 		{
@@ -155,8 +155,6 @@ void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 	// Build MVP matrix
 	glm::mat4 MVP = _projectionMatrix * _viewMatrix * mm;
 	// Send our transformation to the currently bound shader, in the "MVP" uniform
-	GLuint matrixID = glGetUniformLocation(_programID, "MVP");
-	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);
 
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
@@ -211,20 +209,74 @@ void Renderer::renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm)
 
 		GLuint colorID = glGetUniformLocation(_programID, "blendColor");
 		glUniform4f(colorID, spriteSheet[i]->color.r/255, spriteSheet[i]->color.g/255, spriteSheet[i]->color.b/255, 1.0f);
-		
+
 		this->renderMesh(mesh, MVP);
 	}
 }
 
-void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm)
+void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm, float scaleX, float scaleY)
 {
+	for (int i = 0; i < 9; i++)
+	{
+		// Build MVP matrix
+		glm::mat4 MVP = _projectionMatrix * _viewMatrix * mm;
 
+		// Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		Sprite* s = _resMan.GetTexture(sprite->TextureName());
+		glBindTexture(GL_TEXTURE_2D, s->getTexture());
+		Mesh* mesh = _resMan.GetMesh(s->width(), s->height(), sprite->Meshes()[i]->GetUV().x, sprite->Meshes()[i]->GetUV().y, sprite->pivot);
+		// Set our "textureSampler" sampler to use Texture Unit 0
+		GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
+		glUniform1i(textureID, 0);
+
+		// GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
+		// glUniform2f(uvOffset, sprite->getUVOffset()[0], sprite->getUVOffset()[1]);
+
+		GLuint colorID = glGetUniformLocation(_programID, "blendColor");
+		glUniform4f(colorID, sprite->color.r/255, sprite->color.g/255, sprite->color.b/255, 1.0f);
+
+		renderMesh(mesh, MVP, scaleX, scaleY);
+	}
+	
 }
 
-void Renderer::renderMesh(Mesh* m, glm::mat4 mm)
+void Renderer::renderMesh(Mesh* m, glm::mat4 mm, float scaleX, float scaleY)
 {
+	glm::mat4 mdm = mm;
+	if(m->IsNineSlice())
+	{
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(m->meshPos[0], m->meshPos[1], 0));
+		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, 0.0f);
+		glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+		if(m->Corner())
+		{
+			scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f/scaleX, 1.0f/scaleY, 1));
+		}
+		else
+		{
+			switch (m->Type())
+			{
+				case 0:
+					break;
+				case 1:
+					scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f/scaleX, 1.0f, 1));
+					break;
+				case 2:
+					scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f/scaleY, 1));
+					break;
+				default:
+					std::cout << "Error: Mesh type not found" << std::endl;
+					break;
+			}
+		}
+		
+		glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+		mdm *= modelMatrix;
+	}
+
 	GLuint matrixID = glGetUniformLocation(_programID, "MVP");
-	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mm[0][0]);
+	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mdm[0][0]);
 
 	// 1st attribute buffer : vertices
 	GLuint vertexPositionID = glGetAttribLocation(_programID, "vertexPosition");

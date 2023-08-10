@@ -95,7 +95,7 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = (height - (t + b)) / height;
 	offsetX = l / width;
 	offsetY = b / height;
-	Mesh* S1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	Mesh* S1 = new Mesh((width - (l + r)), (height - (t + b)), uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
 	meshes.push_back(S1);
 
 	//left
@@ -103,7 +103,7 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = (height - (t + b)) / height;
 	offsetX = 0;
 	offsetY = t / height;
-	Mesh* SY1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	Mesh* SY1 = new Mesh(l, (height - (t + b)), uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false, 1);
 	meshes.push_back(SY1);
 
 	//right
@@ -111,7 +111,7 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = (height - (t + b)) / height;
 	offsetX = (width - r) / width;
 	offsetY = t / height;
-	Mesh* SY2 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	Mesh* SY2 = new Mesh(width, (height - (t + b)), uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false, 1);
 	meshes.push_back(SY2);
 
 	//top
@@ -119,7 +119,7 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = t / height;
 	offsetX = l / width;
 	offsetY = 0;
-	Mesh* SX1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	Mesh* SX1 = new Mesh((width - (l + r)), t, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false, 2);
 	meshes.push_back(SX1);
 
 	//bottom
@@ -127,7 +127,7 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = b / height;
 	offsetX = l / width;
 	offsetY = (height - b) / height;
-	Mesh* SX2 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	Mesh* SX2 = new Mesh((width - (l + r)), b, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false, 2);
 	meshes.push_back(SX2);
 
 	//top left corner
@@ -135,14 +135,14 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = t / height;
 	offsetX = 0;
 	offsetY = 0;
-	Mesh* C1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	Mesh* C1 = new Mesh(l, t, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
 	meshes.push_back(C1);
 
 	//top right corner
 	uvX = r / width;
 	offsetX = (width - r) / width;
 	offsetY = 0;
-	Mesh* C2 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	Mesh* C2 = new Mesh(r, t, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
 	meshes.push_back(C2);
 
 	//bottom left corner
@@ -150,13 +150,13 @@ Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b
 	uvY = b / height;
 	offsetX = 0;
 	offsetY = (height - b) / height;
-	Mesh* C3 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	Mesh* C3 = new Mesh(l, b, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
 	meshes.push_back(C3);
 
 	//bottom right corner
 	uvX = r / width;
 	offsetX = (width - r) / width;
-	Mesh* C4 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	Mesh* C4 = new Mesh(r, b, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
 	meshes.push_back(C4);
 }
 

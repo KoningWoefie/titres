@@ -2,6 +2,18 @@
 
 Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot)
 {
+    _width = width;
+    _height = height;
+    _uvWidth = uvWidth;
+    _uvHeight = uvHeight;
+    _pivot = pivot;
+
+    _uvOffset = glm::vec2(0.0f, 0.0f);
+    _corner = false;
+    nineSlice = false;
+    _type = 0;
+    meshPos = glm::vec2(0.0f, 0.0f);
+
 	std::vector<glm::vec3> vertices;
 
     //first triangle
@@ -24,7 +36,7 @@ Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot
     generateBuffers(vertices, _uvs);
 }
 
-Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot, glm::vec2 uvOffset, bool corner)
+Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot, glm::vec2 uvOffset, bool corner, int type)
 {
     _width = width;
     _height = height;
@@ -33,6 +45,13 @@ Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot
     _pivot = pivot;
     _corner = corner;
     _uvOffset = uvOffset;
+    _type = type;
+
+    nineSlice = true;
+
+    float x = (_uvOffset.x * width) + ((uvWidth * width) / 2);
+    float y = (_uvOffset.y * height) + ((uvHeight * height) / 2);
+    meshPos = glm::vec2(x, y);
 }
 
 Mesh::~Mesh()
