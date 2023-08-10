@@ -6,13 +6,17 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include <common/mesh.h>
+
 //Copyright 2023 Sander Hoving (Fuck you Gideon)
 
 class Sprite
 {
 public:
 	Sprite(const std::string& imagepath);
+	Sprite(const std::string& imagepath, int width, int height, int t, int b, int l, int r);
 	Sprite(const std::string& imagepath, float uvHeight, float uvWidth);
+
 	virtual ~Sprite();
 	void ClearTextures();
 
@@ -63,6 +67,8 @@ private:
 	bool spriteSheet;
 
 	std::string _textureName;
+
+	std::vector<Mesh*> meshes;
 };
 
 #endif /* SPRITE_H */

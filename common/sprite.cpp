@@ -66,6 +66,100 @@ Sprite::Sprite(const std::string& imagepath, float uvHeight, float uvWidth)
 	SetUpUV(uvHeight, uvWidth);
 }
 
+Sprite::Sprite(const std::string& imagepath, int width, int height, int t, int b, int l, int r)
+{
+	spriteSheet = false;
+	pivot = glm::vec2(0.5f, 0.5f);
+	_textureName = imagepath;
+	_width = width;
+	_height = height;
+
+	spritePosition = glm::vec2(0.0f, 0.0f);
+	spriteRotation = 0.0f;
+	spriteScale = glm::vec2(1.0f, 1.0f);
+
+	_uvOffset = glm::vec2(0.0f, 0.0f);
+
+	setup = false;
+
+	color = glm::vec3(255, 255, 255);
+
+	float uvX = 0;
+	float uvY = 0;
+
+	float offsetX = 0;
+	float offsetY = 0;
+
+	//middle
+	uvX = (width - (l + r)) / width;
+	uvY = (height - (t + b)) / height;
+	offsetX = l / width;
+	offsetY = b / height;
+	Mesh* S1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	meshes.push_back(S1);
+
+	//left
+	uvX = l / width;
+	uvY = (height - (t + b)) / height;
+	offsetX = 0;
+	offsetY = t / height;
+	Mesh* SY1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	meshes.push_back(SY1);
+
+	//right
+	uvX = r / width;
+	uvY = (height - (t + b)) / height;
+	offsetX = (width - r) / width;
+	offsetY = t / height;
+	Mesh* SY2 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	meshes.push_back(SY2);
+
+	//top
+	uvX = (width - (l + r)) / width;
+	uvY = t / height;
+	offsetX = l / width;
+	offsetY = 0;
+	Mesh* SX1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	meshes.push_back(SX1);
+
+	//bottom
+	uvX = (width - (l + r)) / width;
+	uvY = b / height;
+	offsetX = l / width;
+	offsetY = (height - b) / height;
+	Mesh* SX2 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), false);
+	meshes.push_back(SX2);
+
+	//top left corner
+	uvX = l / width;
+	uvY = t / height;
+	offsetX = 0;
+	offsetY = 0;
+	Mesh* C1 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	meshes.push_back(C1);
+
+	//top right corner
+	uvX = r / width;
+	offsetX = (width - r) / width;
+	offsetY = 0;
+	Mesh* C2 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	meshes.push_back(C2);
+
+	//bottom left corner
+	uvX = l / width;
+	uvY = b / height;
+	offsetX = 0;
+	offsetY = (height - b) / height;
+	Mesh* C3 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	meshes.push_back(C3);
+
+	//bottom right corner
+	uvX = r / width;
+	offsetX = (width - r) / width;
+	Mesh* C4 = new Mesh(width, height, uvX, uvY, pivot, glm::vec2(offsetX, offsetY), true);
+	meshes.push_back(C4);
+}
+
 Sprite::~Sprite()
 {
 }
