@@ -153,8 +153,14 @@ void Renderer::renderEntity(Entity* entity, glm::mat4 PaMa)
 void Renderer::renderSprite(Sprite* sprite, glm::mat4 mm)
 {
 	// Build MVP matrix
-	glm::mat4 MVP = _projectionMatrix * _viewMatrix * mm;
 	// Send our transformation to the currently bound shader, in the "MVP" uniform
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sprite->spritePosition[0], sprite->spritePosition[1], 0));
+	glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, sprite->spriteRotation);
+	glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(sprite->spriteScale[0], sprite->spriteScale[1], 1));
+	glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	glm::mat4 mdm = mm;
+	mdm *= modelMatrix;
+	glm::mat4 MVP = _projectionMatrix * _viewMatrix * mdm;
 
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
@@ -219,34 +225,46 @@ void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm, float scaleX, floa
 	for (int i = 0; i < 9; i++)
 	{
 		// Build MVP matrix
-		glm::mat4 MVP = _projectionMatrix * _viewMatrix * mm;
 
 		// Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
 		Sprite* s = _resMan.GetTexture(sprite->TextureName());
 		glBindTexture(GL_TEXTURE_2D, s->getTexture());
-		Mesh* mesh = _resMan.GetMesh(s->width(), s->height(), sprite->Meshes()[i]->GetUV().x, sprite->Meshes()[i]->GetUV().y, sprite->pivot);
+		Mesh* mesh = _resMan.GetMesh(sprite->Meshes()[i]->Width(), sprite->Meshes()[i]->Height(), sprite->Meshes()[i]->GetUV().x, sprite->Meshes()[i]->GetUV().y, sprite->pivot, sprite->Meshes()[i]->GetUVOffset(), sprite->Meshes()[i]->Type(), sprite->Meshes()[i]->Corner());
 		// Set our "textureSampler" sampler to use Texture Unit 0
 		GLuint textureID = glGetUniformLocation(_programID, "textureSampler");
 		glUniform1i(textureID, 0);
 
-		// GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
-		// glUniform2f(uvOffset, sprite->getUVOffset()[0], sprite->getUVOffset()[1]);
+		GLuint uvOffset = glGetUniformLocation(_programID, "UVoffset");
+		glUniform2f(uvOffset, sprite->Meshes()[i]->GetUVOffset()[0], sprite->Meshes()[i]->GetUVOffset()[1]);
+		// std::cout << std::to_string(sprite->Meshes()[i]->GetUVOffset()[0]) << " , " << std::to_string(sprite->Meshes()[i]->GetUVOffset()[1]) << std::endl;
 
 		GLuint colorID = glGetUniformLocation(_programID, "blendColor");
 		glUniform4f(colorID, sprite->color.r/255, sprite->color.g/255, sprite->color.b/255, 1.0f);
 
-		renderMesh(mesh, MVP, scaleX, scaleY);
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sprite->spritePosition[0], sprite->spritePosition[1], 0));
+		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, sprite->spriteRotation);
+		glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(sprite->spriteScale[0], sprite->spriteScale[1], 1));
+
+		glm::mat4 modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+
+		glm::mat4 mdm = mm;
+
+		mdm *= modelMatrix;
+
+		glm::mat4 MVP = _projectionMatrix * _viewMatrix * mdm;
+
+		renderMesh(mesh, MVP, scaleX, scaleY, sprite->Meshes()[i]->meshPos.x, sprite->Meshes()[i]->meshPos.y);
 	}
 	
 }
 
-void Renderer::renderMesh(Mesh* m, glm::mat4 mm, float scaleX, float scaleY)
+void Renderer::renderMesh(Mesh* m, glm::mat4 mm, float scaleX, float scaleY, float x, float y)
 {
 	glm::mat4 mdm = mm;
 	if(m->IsNineSlice())
 	{
-		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(m->meshPos[0], m->meshPos[1], 0));
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, -y, 0));
 		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, 0.0f);
 		glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 		if(m->Corner())
@@ -258,11 +276,14 @@ void Renderer::renderMesh(Mesh* m, glm::mat4 mm, float scaleX, float scaleY)
 			switch (m->Type())
 			{
 				case 0:
+					// std::cout << "middle" << std::endl;
 					break;
 				case 1:
+					// std::cout << "edgeX" << std::endl;
 					scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f/scaleX, 1.0f, 1));
 					break;
 				case 2:
+					// std::cout << "edgeY" << std::endl;
 					scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f/scaleY, 1));
 					break;
 				default:

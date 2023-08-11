@@ -24,10 +24,18 @@ BattleScene::BattleScene() : Scene()
 
 	//player->AddBattler(new Battler("dumbass", 500, 300, 10, 10));
 
+
+
+	Button* b = new Button();
+	b->AddNineSliceSprite("assets/buttons-down.tga", 190, 190, 25, 25, 25, 25);
+	b->position = glm::vec3(0, 300, 0.0f);
+	b->scale = glm::vec3(2.0f, 3.0f, 1.0f);
+	this->AddChild(b);
+
 	srand(time(NULL));
 	this->AddChild(hud);
-	this->AddChild(owP);
-	this->AddChild(t);
+	// this->AddChild(owP);
+	// this->AddChild(t);
 
 	_selectedIndexX = 0;
 	_selectedMenu = 0;

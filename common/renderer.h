@@ -22,7 +22,7 @@ public:
 	void renderSprite(Sprite* sprite, glm::mat4 mm);
 	void renderSpriteSheet(std::vector<Sprite*> spriteSheet, glm::mat4 mm);
 	void renderNineSlices(Sprite* sprite, glm::mat4 mm, float scaleX, float scaleY);
-	void renderMesh(Mesh* m, glm::mat4 mm, float scaleX = 1.0f, float scaleY = 1.0f);
+	void renderMesh(Mesh* m, glm::mat4 mm, float scaleX = 1.0f, float scaleY = 1.0f, float x = 0.0f, float y = 0.0f);
 	GLFWwindow* window() { return _window; };
 
 	float updateDeltaTime();

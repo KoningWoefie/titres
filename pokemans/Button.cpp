@@ -19,7 +19,7 @@ void Button::update(float deltaTime)
 {
 	if (!_selected)
 	{
-		this->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+		// this->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		return;
 	}
 	this->scale = glm::vec3(1.1f, 1.1f, 1.0f);

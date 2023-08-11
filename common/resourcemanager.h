@@ -17,7 +17,7 @@ public:
 
 	Sprite* GetTexture(const std::string& fileName, bool spriteSheet = false, float uvH = 1.0f, float uvW = 1.0f);
 
-	Mesh* GetMesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot);
+	Mesh* GetMesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot, glm::vec2 uvOffset = glm::vec2(0.0f, 0.0f), int type = -1, bool corner = false);
 
 private:
 	std::map<std::string, Sprite*> _textures;
