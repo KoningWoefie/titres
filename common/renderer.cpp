@@ -253,6 +253,15 @@ void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm, float scaleX, floa
 		mdm *= modelMatrix;
 
 		glm::mat4 MVP = _projectionMatrix * _viewMatrix * mdm;
+		
+		float sX = scaleX;
+		float sY = scaleY;
+
+		int diffX = (sprite->Meshes()[5]->Width() * (scaleX - 1)) * 2;
+		int diffY = (sprite->Meshes()[5]->Height() * (scaleY - 1)) * 2;
+
+		sX += (float)diffX / sprite->Meshes()[0]->Width();
+		sY += (float)diffY / sprite->Meshes()[0]->Height();
 
 		float x = 0.0f;
 		float y = 0.0f;
@@ -261,38 +270,39 @@ void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm, float scaleX, floa
 		case 0:
 			break;
 		case 1:
-			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX));
+			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / sX));
 			break;
 		case 2:
-			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX);
+			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / sX);
 			break;
 		case 3:
-			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY));
+			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / sY));
 			break;
 		case 4:
-			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY);
+			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / sY);
 			break;
 		case 5:
-			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX));
-			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY));
+			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / sX));
+			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / sY));
 			break;
 		case 6:
-			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX);
-			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY));
+			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / sX);
+			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / sY));
 			break;
 		case 7:
-			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX));
-			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY);
+			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / sX));
+			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / sY);
 			break;
 		case 8:
-			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX);
-			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY);
+			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / sX);
+			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / sY);
 			break;
 		default:
 			break;
 		}
-
-		renderMesh(mesh, MVP, scaleX, scaleY, x, y);
+		// std::cout << sprite->Meshes()[5]->Width() + (sprite->Meshes()[3]->Width() * sX) + sprite->Meshes()[6]->Width() << std::endl;
+		// std::cout << sprite->Meshes()[5]->Height() + (sprite->Meshes()[1]->Height() * sY) + sprite->Meshes()[7]->Height() << std::endl;
+		renderMesh(mesh, MVP, sX, sY, x, y);
 		// renderMesh(mesh, MVP, scaleX, scaleY, sprite->Meshes()[i]->meshPos.x, sprite->Meshes()[i]->meshPos.y);
 	}
 	
