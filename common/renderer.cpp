@@ -254,7 +254,46 @@ void Renderer::renderNineSlices(Sprite* sprite, glm::mat4 mm, float scaleX, floa
 
 		glm::mat4 MVP = _projectionMatrix * _viewMatrix * mdm;
 
-		renderMesh(mesh, MVP, scaleX, scaleY, sprite->Meshes()[i]->meshPos.x, sprite->Meshes()[i]->meshPos.y);
+		float x = 0.0f;
+		float y = 0.0f;
+		switch (i)
+		{
+		case 0:
+			break;
+		case 1:
+			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX));
+			break;
+		case 2:
+			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX);
+			break;
+		case 3:
+			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY));
+			break;
+		case 4:
+			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY);
+			break;
+		case 5:
+			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX));
+			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY));
+			break;
+		case 6:
+			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX);
+			y = -(((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY));
+			break;
+		case 7:
+			x = -(((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX));
+			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY);
+			break;
+		case 8:
+			x = ((sprite->Meshes()[0]->Width())/2) + ((sprite->Meshes()[i]->Width() / 2) / scaleX);
+			y = ((sprite->Meshes()[0]->Height())/2) + ((sprite->Meshes()[i]->Height() / 2) / scaleY);
+			break;
+		default:
+			break;
+		}
+
+		renderMesh(mesh, MVP, scaleX, scaleY, x, y);
+		// renderMesh(mesh, MVP, scaleX, scaleY, sprite->Meshes()[i]->meshPos.x, sprite->Meshes()[i]->meshPos.y);
 	}
 	
 }
@@ -264,7 +303,7 @@ void Renderer::renderMesh(Mesh* m, glm::mat4 mm, float scaleX, float scaleY, flo
 	glm::mat4 mdm = mm;
 	if(m->IsNineSlice())
 	{
-		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, -y, 0));
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
 		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(0.0f, 0.0f, 0.0f);
 		glm::mat4 scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 		if(m->Corner())

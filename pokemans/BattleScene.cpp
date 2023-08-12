@@ -28,8 +28,9 @@ BattleScene::BattleScene() : Scene()
 
 	Button* b = new Button();
 	b->AddNineSliceSprite("assets/buttons-down.tga", 190, 190, 25, 25, 25, 25);
-	b->position = glm::vec3(0, 300, 0.0f);
+	b->position = glm::vec3(400, 300, 0.0f);
 	b->scale = glm::vec3(2.0f, 3.0f, 1.0f);
+	// b->rotation = 3.14;
 	this->AddChild(b);
 
 	srand(time(NULL));

@@ -48,11 +48,11 @@ Mesh::Mesh(int width, int height, float uvWidth, float uvHeight, glm::vec2 pivot
     _type = type;
 
     _nineSlice = true;
-
-    int x = (_uvOffset.x * 190.0f) + ((uvWidth * 190.0f) / 2);
-    int y = (_uvOffset.y * 190.0f) + ((uvHeight * 190.0f) / 2);
+    // int x = (_uvOffset.x * 190.0f) + ((uvWidth * 190.0f) / 2);
+    // int y = (_uvOffset.y * 190.0f) + ((uvHeight * 190.0f) / 2);
     // std::cout << "x: " << _uvOffset.x << " y: " << _uvOffset.y << std::endl;
-    meshPos = glm::vec2(x, y);
+    // meshPos = glm::vec2(x, y);
+    meshPos = glm::vec2(0.0f, 0.0f);
 }
 
 Mesh::~Mesh()
